@@ -4,10 +4,4 @@ An open-source web-based Clicker style game running on the Solana blockchain.
 
 ## Running locally
 
-Run web interface:
-
-    cd web-ui
-    yarn install
-    yarn dev
-
-    # open http://localhost:3000
+See [README.md](web-ui/README.md) to run the web frontend.
