@@ -36,7 +36,7 @@ const Home: NextPage = () => {
               handleClick();
               setEffect(true);
             }}
-            className="bg-blue-500 p-2 h-48 w-48 rounded-full"
+            className="bg-blue-400 border-blue-600 border-4 hover:bg-blue-600 hover:text-white p-2 h-48 w-48 rounded-full"
           >
             Click Me
           </button>
