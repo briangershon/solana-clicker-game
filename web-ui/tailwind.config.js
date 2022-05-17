@@ -4,7 +4,17 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg) scale(1)" },
+          "50%": { transform: "rotate(3deg) scale(1.8)" },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 200ms ease-in-out",
+      },
+    },
   },
   plugins: [],
 };

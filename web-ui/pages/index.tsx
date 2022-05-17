@@ -1,8 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 // import Image from "next/image";
+import { useState } from "react";
 
 const Home: NextPage = () => {
+  const [clicks, setClicks] = useState(0);
+  const [effect, setEffect] = useState(false);
+
+  function handleClick() {
+    setClicks(clicks + 1);
+  }
+
   return (
     <div className="flex items-center flex-col">
       <Head>
@@ -13,10 +21,23 @@ const Home: NextPage = () => {
         <div className="p-10 flex flex-col items-center justify-between">
           <h2 className="text-xl font-bold">Solana Clicker</h2>
           <div className="flex flex-col items-center p-2">
-            <div>0 clicks</div>
-            <div>0 cps</div>
+            <div
+              onAnimationEnd={() => {
+                setEffect(false);
+              }}
+              className={`${effect && "animate-wiggle"}`}
+            >
+              {clicks} clicks
+            </div>
+            {/* <div>0 cps</div> */}
           </div>
-          <button className="bg-blue-500 p-2 h-48 w-48 rounded-full">
+          <button
+            onClick={() => {
+              handleClick();
+              setEffect(true);
+            }}
+            className="bg-blue-500 p-2 h-48 w-48 rounded-full"
+          >
             Click Me
           </button>
         </div>
