@@ -42,7 +42,7 @@ const Home: NextPage = () => {
           </button>
         </div>
 
-        <div className="sm:p-10 items-center flex flex-col justify-between">
+        {/* <div className="sm:p-10 items-center flex flex-col justify-between">
           <h2 className="text-xl font-bold">Extras</h2>
           <div className="bg-orange-300 m-3 border-0 p-2 shadow-md w-48">
             auto-clicker one
@@ -53,13 +53,13 @@ const Home: NextPage = () => {
           <div className="bg-green-300 m-3 border-0 p-2 shadow-md w-48">
             auto-clicker three
           </div>
-        </div>
+        </div> */}
       </div>
-      <div className="p-2 m-3 flex">
+      {/* <div className="p-2 m-3 flex">
         <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus one</div>
         <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus two</div>
         <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus three</div>
-      </div>
+      </div> */}
     </div>
   );
 };
