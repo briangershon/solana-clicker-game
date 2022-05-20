@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-// import Image from "next/image";
 import { useState } from "react";
 
 const Home: NextPage = () => {
@@ -12,14 +11,20 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className="flex items-center flex-col">
+    <div className="flex items-center flex-col p-4">
       <Head>
         <title>Solana Clicker</title>
       </Head>
 
+      <div className="navbar mb-2 bg-base-300 text-base-content rounded-box p-4">
+        <div className="flex-1 text-xl font-mono">Solana Clicker</div>
+        <div className="flex-none">
+          {/* <button className="btn btn-ghost">Select Wallet</button> */}
+        </div>
+      </div>
+
       <div className="flex flex-col sm:flex-row">
-        <div className="p-10 flex flex-col items-center justify-between">
-          <h2 className="text-xl font-bold">Solana Clicker</h2>
+        <div className="p-4 flex flex-col items-center justify-between gap-3">
           <div className="flex flex-col items-center p-2">
             <div
               onAnimationEnd={() => {
@@ -36,7 +41,7 @@ const Home: NextPage = () => {
               handleClick();
               setEffect(true);
             }}
-            className="bg-blue-400 border-blue-600 border-4 hover:bg-blue-600 hover:text-white p-2 h-48 w-48 rounded-full"
+            className="btn btn-lg bg-primary hover:bg-primary-focus text-primary-content border-primary-focus border-4 h-36 w-36 rounded-full"
           >
             Click Me
           </button>

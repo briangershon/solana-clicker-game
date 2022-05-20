@@ -2,10 +2,11 @@
 
 An open-source web-based Clicker style game running on the Solana blockchain.
 
-Front-end technology:
+Front-end technologies:
 
-- Next.js
-- tailwindcss
+- [Next.js](https://nextjs.org/)
+- [tailwindcss](https://tailwindcss.com/)
+- [daisyUI](https://daisyui.com)
 
 ## Running locally
 
