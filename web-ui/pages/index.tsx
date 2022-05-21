@@ -2,12 +2,18 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 
+import { WalletMenu } from "../components/WalletMenu";
+
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);
   const [effect, setEffect] = useState(false);
 
   function handleClick() {
     setClicks(clicks + 1);
+  }
+
+  function handleWalletClick() {
+    console.log('handleWalletClick');
   }
 
   return (
@@ -19,7 +25,7 @@ const Home: NextPage = () => {
       <div className="navbar mb-2 bg-base-300 text-base-content rounded-box p-4">
         <div className="flex-1 text-xl font-mono">Solana Clicker</div>
         <div className="flex-none">
-          {/* <button className="btn btn-ghost">Select Wallet</button> */}
+        <WalletMenu onUseWalletClick={handleWalletClick} />
         </div>
       </div>
 
