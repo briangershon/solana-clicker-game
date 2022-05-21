@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useWallet, Wallet } from "@solana/wallet-adapter-react";
-import { WalletReadyState, Adapter } from "@solana/wallet-adapter-base";
+import { WalletReadyState } from "@solana/wallet-adapter-base";
 
 type Props = {
   onUseWalletClick: () => void;
@@ -17,7 +17,7 @@ function shortenPublicKey(wallet: Wallet | null): string {
 export const WalletMenu = ({ onUseWalletClick }: Props) => {
   const [isConnected, setIsConnected] = useState(false);
   const [pk, setPk] = useState("");
-  const [installedWallets, setInstalledWallets] = useState<Adapter[]>([]);
+  const [installedWallets, setInstalledWallets] = useState<Wallet[]>([]);
 
   const { disconnect, connected, wallet, wallets } = useWallet();
 
@@ -28,7 +28,7 @@ export const WalletMenu = ({ onUseWalletClick }: Props) => {
     const installed = wallets
       .filter((w) => w.adapter.readyState == WalletReadyState.Installed)
       .map((w) => {
-        return w.adapter;
+        return w;
       });
     setInstalledWallets(installed);
   }, [connected, wallet, wallets]);
@@ -48,28 +48,42 @@ export const WalletMenu = ({ onUseWalletClick }: Props) => {
             {isConnected ? `Connected to ${pk}` : "Not connected"}
           </h3>
 
-          {installedWallets.map((adapter) => {
+          {installedWallets.length === 0 && (
+            <div>
+              <div>
+                No Solana wallets found. Please visit the{" "}
+                <a
+                  className="underline"
+                  href="https://docs.solana.com/wallet-guide"
+                  target="_blank"
+                >
+                  Solana Wallet Guide
+                </a>
+                .
+              </div>{" "}
+              <div className="mt-2">
+                This app supports{" "}
+                {wallets.map((w) => w.adapter.name).join(", ")} wallets.
+              </div>
+            </div>
+          )}
+
+          {installedWallets.map((wallet) => {
             return (
               <button
-                key={adapter.name}
+                key={wallet.adapter.name}
                 disabled={isConnected}
                 className="btn btn-secondary"
                 onClick={async () => {
-                  await adapter.connect();
-                  setIsConnected(adapter.connected);
-                  if (adapter.publicKey != null) {
-                    setPk(
-                      `${adapter.publicKey
-                        .toBase58()
-                        .substring(0, 4)}..${adapter.publicKey
-                        .toBase58()
-                        .slice(-4)}`
-                    );
+                  await wallet.adapter.connect();
+                  setIsConnected(wallet.adapter.connected);
+                  if (wallet.adapter.publicKey != null) {
+                    setPk(shortenPublicKey(wallet));
                   }
                   onUseWalletClick();
                 }}
               >
-                Connect {adapter.name}
+                Connect {wallet.adapter.name}
               </button>
             );
           })}
@@ -81,7 +95,6 @@ export const WalletMenu = ({ onUseWalletClick }: Props) => {
               await disconnect();
               setIsConnected(false);
               setPk("");
-              // e.currentTarget.blur();
             }}
           >
             Disconnect

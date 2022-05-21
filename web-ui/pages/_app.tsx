@@ -3,7 +3,6 @@ import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import {
   GlowWalletAdapter,
   PhantomWalletAdapter,
@@ -12,7 +11,7 @@ import {
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
-import { FC, useMemo } from "react";
+import { useMemo } from "react";
 
 // Use require instead of import since order matters
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -44,9 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <Component {...pageProps} />
-        </WalletModalProvider>
+        <Component {...pageProps} />
       </WalletProvider>
     </ConnectionProvider>
   );
