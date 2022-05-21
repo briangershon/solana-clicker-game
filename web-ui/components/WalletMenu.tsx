@@ -56,6 +56,7 @@ export const WalletMenu = ({ onUseWalletClick }: Props) => {
                   className="underline"
                   href="https://docs.solana.com/wallet-guide"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   Solana Wallet Guide
                 </a>
