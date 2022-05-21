@@ -1,10 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import {
-  WalletDisconnectButton,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
+
+import { WalletMenu } from "../components/WalletMenu";
 
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);
@@ -12,6 +10,10 @@ const Home: NextPage = () => {
 
   function handleClick() {
     setClicks(clicks + 1);
+  }
+
+  function handleWalletClick() {
+    console.log('handleWalletClick');
   }
 
   return (
@@ -23,7 +25,7 @@ const Home: NextPage = () => {
       <div className="navbar mb-2 bg-base-300 text-base-content rounded-box p-4">
         <div className="flex-1 text-xl font-mono">Solana Clicker</div>
         <div className="flex-none">
-          <button className="btn btn-ghost">Select Wallet</button>
+        <WalletMenu onUseWalletClick={handleWalletClick} />
         </div>
       </div>
 
@@ -69,15 +71,6 @@ const Home: NextPage = () => {
         <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus two</div>
         <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus three</div>
       </div> */}
-
-      <div className="flex gap-2">
-        <div className="bg-slate-300 p-2 border-2 rounded-lg">
-          <WalletMultiButton />
-        </div>
-        <div className="bg-slate-700 p-2 border-2 rounded-lg">
-          <WalletDisconnectButton />
-        </div>
-      </div>
     </div>
   );
 };

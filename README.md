@@ -7,6 +7,7 @@ Front-end technologies:
 - [Next.js](https://nextjs.org/)
 - [tailwindcss](https://tailwindcss.com/)
 - [daisyUI](https://daisyui.com)
+- [Solana Wallet Adapter](https://github.com/solana-labs/wallet-adapter)
 
 ## Running locally
 
