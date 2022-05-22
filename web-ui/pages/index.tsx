@@ -65,7 +65,15 @@ const Home: NextPage = () => {
               Click Me
             </button>
 
-            {!isConnected && <div>Please connect your wallet to continue.</div>}
+            {!isConnected && (
+              <div>
+                <p className="p-2">Please connect your wallet to continue.</p>
+                <p className="p-2">
+                  Solana wallet support has only been tested on desktop web
+                  browsers.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* <div className="sm:p-10 items-center flex flex-col justify-between">
