@@ -4,10 +4,7 @@ import { useState, useEffect } from "react";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 
-import {
-  WalletDisconnectButton,
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);
@@ -34,7 +31,6 @@ const Home: NextPage = () => {
         <div className="flex-1 text-xl font-mono">Solana Clicker</div>
         <div className="flex-none">
           <WalletMultiButton />
-          <WalletDisconnectButton />
         </div>
       </div>
 
