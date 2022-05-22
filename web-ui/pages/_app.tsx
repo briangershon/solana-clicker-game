@@ -10,6 +10,9 @@ import {
   SolflareWalletAdapter,
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
+import {
+  WalletModalProvider,
+} from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import { useMemo } from "react";
 
@@ -43,7 +46,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <Component {...pageProps} />
+        <WalletModalProvider>
+          <Component {...pageProps} />
+        </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   );
