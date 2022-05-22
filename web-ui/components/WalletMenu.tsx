@@ -34,23 +34,21 @@ export const WalletMenu = ({ onUseWalletClick }: Props) => {
   }, [connected, wallet, wallets]);
 
   return (
-    <div className="dropdown dropdown-left">
-      <label tabIndex={0} className="btn m-1">
+    <div>
+      <label htmlFor="wallet-modal" className="btn modal-button">
         {pk ? `Connected: ${pk}` : "Connect Wallet"}
       </label>
 
-      <div
-        tabIndex={0}
-        className="dropdown-content card card-compact p-2 shadow bg-primary text-primary-content w-56"
-      >
-        <div className="card-body">
-          <h3 className="card-title">
+      <input type="checkbox" id="wallet-modal" className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">
             {isConnected ? `Connected to ${pk}` : "Not connected"}
           </h3>
 
           {installedWallets.length === 0 && (
             <div>
-              <div>
+              <p className="py-4">
                 No Solana wallets found. Please visit the{" "}
                 <a
                   className="underline"
@@ -61,45 +59,52 @@ export const WalletMenu = ({ onUseWalletClick }: Props) => {
                   Solana Wallet Guide
                 </a>
                 .
-              </div>{" "}
-              <div className="mt-2">
+              </p>{" "}
+              <p className="py-4">
                 This app supports{" "}
                 {wallets.map((w) => w.adapter.name).join(", ")} wallets.
-              </div>
+              </p>
             </div>
           )}
 
-          {installedWallets.map((wallet) => {
-            return (
-              <button
-                key={wallet.adapter.name}
-                disabled={isConnected}
-                className="btn btn-secondary"
-                onClick={async () => {
-                  await wallet.adapter.connect();
-                  setIsConnected(wallet.adapter.connected);
-                  if (wallet.adapter.publicKey != null) {
-                    setPk(shortenPublicKey(wallet));
-                  }
-                  onUseWalletClick();
-                }}
-              >
-                Connect {wallet.adapter.name}
-              </button>
-            );
-          })}
+          <div className="flex flex-col">
+            {installedWallets.map((wallet) => {
+              return (
+                <button
+                  key={wallet.adapter.name}
+                  disabled={isConnected}
+                  className="btn btn-primary"
+                  onClick={async () => {
+                    await wallet.adapter.connect();
+                    setIsConnected(wallet.adapter.connected);
+                    if (wallet.adapter.publicKey != null) {
+                      setPk(shortenPublicKey(wallet));
+                    }
+                    onUseWalletClick();
+                  }}
+                >
+                  Connect {wallet.adapter.name}
+                </button>
+              );
+            })}
 
-          <button
-            disabled={!isConnected}
-            className="btn btn-secondary"
-            onClick={async () => {
-              await disconnect();
-              setIsConnected(false);
-              setPk("");
-            }}
-          >
-            Disconnect
-          </button>
+            <button
+              disabled={!isConnected}
+              className="btn btn-secondary"
+              onClick={async () => {
+                await disconnect();
+                setIsConnected(false);
+                setPk("");
+              }}
+            >
+              Disconnect
+            </button>
+          </div>
+          <div className="modal-action">
+            <label htmlFor="wallet-modal" className="btn">
+              Ok
+            </label>
+          </div>
         </div>
       </div>
     </div>
