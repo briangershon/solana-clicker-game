@@ -1,14 +1,14 @@
 [features]
 seeds = false
 [programs.localnet]
-clicker = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+clicker = "Edo4xMkzByZTUiFXWf7wRpTKC2mGvpZpCWcby7REpn3w"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
 cluster = "localnet"
-wallet = "/Users/brian/.config/solana/id.json"
+wallet = "/Users/brian/.config/solana/devnet.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

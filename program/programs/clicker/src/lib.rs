@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::error_code;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("Edo4xMkzByZTUiFXWf7wRpTKC2mGvpZpCWcby7REpn3w");
 
 #[program]
 pub mod clicker {
