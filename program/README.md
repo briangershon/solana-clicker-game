@@ -7,5 +7,4 @@
 
 ## Run tests
 
-    yarn test
-
+    anchor test
