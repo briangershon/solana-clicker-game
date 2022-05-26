@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState, useEffect, useMemo } from "react";
 
-import { clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
@@ -31,11 +31,10 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     async function initGame() {
-      console.log("is game ready to play? (connected and initialized)");
       if (wallet) {
-        setIsGameReady(
-          connected && (await isGameInitialized({ wallet, endpoint }))
-        );
+        const gameState = await isGameInitialized({ wallet, endpoint });
+        setIsGameReady(connected && gameState.isReady);
+        setClicks(gameState.clicks);
       }
     }
     setIsConnected(connected);

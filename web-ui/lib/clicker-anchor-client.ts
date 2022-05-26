@@ -13,17 +13,23 @@ type WalletAndNetwork = {
   endpoint: string;
 };
 
+type GameState = {
+  clicks: number;
+  isReady: boolean;
+  errorMessage: string | null;
+};
+
 async function isGameInitialized({
   wallet,
   endpoint,
-}: WalletAndNetwork): Promise<boolean> {
+}: WalletAndNetwork): Promise<GameState> {
   try {
     const program = await getProgram({ wallet, endpoint });
     const games = await program.account.game.all();
     if (games.length === 0) {
       // create a new game
       const gameAccountKeypair = web3.Keypair.generate();
-      console.log(`creating new game at ${gameAccountKeypair.publicKey}`);
+      console.log(`Creating new game at ${gameAccountKeypair.publicKey}`);
       const tx = await program.methods
         .initialize()
         .accounts({
@@ -34,10 +40,25 @@ async function isGameInitialized({
         .signers([gameAccountKeypair])
         .rpc();
     }
-    return true;
+    return {
+      clicks: games[0].account.clicks as number,
+      isReady: true,
+      errorMessage: null,
+    };
   } catch (e) {
     console.error(e);
-    return false;
+    if (e instanceof Error) {
+      return {
+        clicks: 0,
+        isReady: false,
+        errorMessage: e.message,
+      };
+    }
+    return {
+      clicks: 0,
+      isReady: false,
+      errorMessage: "unknown error",
+    };
   }
 }
 
@@ -78,7 +99,6 @@ async function getProgram({
   if (idl === null) {
     throw new Error("Solana program missing IDL");
   }
-  console.log("IDL", idl);
   return new Program(idl, programAddress, provider);
 }
 
