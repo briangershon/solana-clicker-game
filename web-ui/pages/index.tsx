@@ -15,6 +15,7 @@ const Home: NextPage = () => {
   const [effect, setEffect] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [isGameReady, setIsGameReady] = useState(false);
+  const [solanaExplorerLink, setSolanaExplorerLink] = useState("");
 
   const { connected } = useWallet();
   const network = WalletAdapterNetwork.Devnet;
@@ -35,6 +36,9 @@ const Home: NextPage = () => {
         const gameState = await isGameInitialized({ wallet, endpoint });
         setIsGameReady(connected && gameState.isReady);
         setClicks(gameState.clicks);
+        setSolanaExplorerLink(
+          `https://explorer.solana.com/address/${gameState.gameAccountPublicKey}/anchor-account?cluster=${network}`
+        );
       }
     }
     setIsConnected(connected);
@@ -79,6 +83,21 @@ const Home: NextPage = () => {
             >
               Click Me
             </button>
+
+            {isGameReady && (
+              <div>
+                View game{" "}
+                <a
+                  className="underline"
+                  href={solanaExplorerLink}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  details
+                </a>{" "}
+                on Solana.
+              </div>
+            )}
 
             {!isConnected && (
               <div>

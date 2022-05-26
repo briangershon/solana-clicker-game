@@ -15,6 +15,7 @@ type WalletAndNetwork = {
 
 type GameState = {
   clicks: number;
+  gameAccountPublicKey: string;
   isReady: boolean;
   errorMessage: string | null;
 };
@@ -25,7 +26,7 @@ async function isGameInitialized({
 }: WalletAndNetwork): Promise<GameState> {
   try {
     const program = await getProgram({ wallet, endpoint });
-    const games = await program.account.game.all();
+    let games = await program.account.game.all();
     if (games.length === 0) {
       // create a new game
       const gameAccountKeypair = web3.Keypair.generate();
@@ -39,10 +40,17 @@ async function isGameInitialized({
         })
         .signers([gameAccountKeypair])
         .rpc();
+
+      // refresh list of games
+      games = await program.account.game.all();
     }
+
+    const game = games[0];
+
     return {
-      clicks: games[0].account.clicks as number,
+      clicks: game.account.clicks as number,
       isReady: true,
+      gameAccountPublicKey: game.publicKey.toBase58(),
       errorMessage: null,
     };
   } catch (e) {
@@ -51,12 +59,14 @@ async function isGameInitialized({
       return {
         clicks: 0,
         isReady: false,
+        gameAccountPublicKey: '',
         errorMessage: e.message,
       };
     }
     return {
       clicks: 0,
       isReady: false,
+      gameAccountPublicKey: '',
       errorMessage: "unknown error",
     };
   }
