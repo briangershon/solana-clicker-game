@@ -1,24 +1,45 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-import { useWallet } from "@solana/wallet-adapter-react";
+import { clusterApiUrl, PublicKey } from "@solana/web3.js";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+
+import { isGameInitialized, saveClick } from "../lib/clicker-anchor-client";
 
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);
   const [effect, setEffect] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [isGameReady, setIsGameReady] = useState(false);
 
-  function handleClick() {
-    setClicks(clicks + 1);
+  const { connected } = useWallet();
+  const network = WalletAdapterNetwork.Devnet;
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const wallet = useAnchorWallet();
+
+  async function handleClick() {
+    if (wallet) {
+      await saveClick({ wallet, endpoint });
+      setClicks(clicks + 1);
+      setEffect(true);
+    }
   }
 
-  const [isConnected, setIsConnected] = useState(false);
-  const { connected } = useWallet();
-
   useEffect(() => {
+    async function initGame() {
+      console.log("is game ready to play? (connected and initialized)");
+      if (wallet) {
+        setIsGameReady(
+          connected && (await isGameInitialized({ wallet, endpoint }))
+        );
+      }
+    }
     setIsConnected(connected);
+    initGame();
   }, [connected]);
 
   return (
@@ -38,7 +59,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col sm:flex-row">
           <div className="p-4 flex flex-col items-center justify-between gap-3">
             <div className="flex flex-col items-center p-2">
-              {isConnected && (
+              {isGameReady && (
                 <div
                   onAnimationEnd={() => {
                     setEffect(false);
@@ -51,10 +72,9 @@ const Home: NextPage = () => {
               {/* <div>0 cps</div> */}
             </div>
             <button
-              disabled={!isConnected}
+              disabled={!isGameReady}
               onClick={() => {
                 handleClick();
-                setEffect(true);
               }}
               className="btn btn-lg bg-primary hover:bg-primary-focus text-primary-content border-primary-focus border-4 h-36 w-36 rounded-full"
             >
@@ -68,6 +88,12 @@ const Home: NextPage = () => {
                   Solana wallet support has only been tested on desktop web
                   browsers.
                 </p>
+              </div>
+            )}
+
+            {!isGameReady && (
+              <div>
+                <p className="p-2">Game initializing...</p>
               </div>
             )}
           </div>
