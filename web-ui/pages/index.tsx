@@ -57,7 +57,7 @@ const Home: NextPage = () => {
     }
     setIsConnected(connected);
     initGame();
-  }, [connected]);
+  }, [connected, endpoint, network, wallet]);
 
   return (
     <div className="flex items-center flex-col sm:p-4 p-1">
