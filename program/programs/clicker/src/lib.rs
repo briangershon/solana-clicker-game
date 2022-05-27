@@ -19,6 +19,12 @@ pub mod clicker {
     
     pub fn click(ctx: Context<Play>) -> Result<()> {
         let game: &mut Account<Game> = &mut ctx.accounts.game;
+
+        // only allow player to increment their own account
+        if &game.player != ctx.accounts.player.key {
+            return Err(error!(ClickerError::InvalidPlayer));
+        }
+
         game.clicks += 1;
 
         Ok(())
@@ -50,6 +56,7 @@ pub struct Initialize<'info> {
 pub struct Play<'info> {
     #[account(mut)]
     pub game: Account<'info, Game>,
+    pub player: Signer<'info>,
 }
 
 #[error_code]

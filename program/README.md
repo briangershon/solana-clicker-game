@@ -7,6 +7,7 @@
 
 ## Run tests
 
+    # make sure Anchor.toml `cluster` is set to "localnet" before running tests
     anchor test
 
 ## Deploy
