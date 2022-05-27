@@ -17,7 +17,7 @@ type GameState = {
   clicks: number;
   gameAccountPublicKey: string;
   isReady: boolean;
-  errorMessage: string | null;
+  errorMessage: string;
 };
 
 async function isGameInitialized({
@@ -26,11 +26,11 @@ async function isGameInitialized({
 }: WalletAndNetwork): Promise<GameState> {
   try {
     const program = await getProgram({ wallet, endpoint });
-    let games = await program.account.game.all();
+    let games = await myGames(wallet, await program.account.game.all());
+
     if (games.length === 0) {
       // create a new game
       const gameAccountKeypair = web3.Keypair.generate();
-      console.log(`Creating new game at ${gameAccountKeypair.publicKey}`);
       const tx = await program.methods
         .initialize()
         .accounts({
@@ -42,7 +42,7 @@ async function isGameInitialized({
         .rpc();
 
       // refresh list of games
-      games = await program.account.game.all();
+      games = await myGames(wallet, await program.account.game.all());
     }
 
     const game = games[0];
@@ -51,22 +51,21 @@ async function isGameInitialized({
       clicks: game.account.clicks as number,
       isReady: true,
       gameAccountPublicKey: game.publicKey.toBase58(),
-      errorMessage: null,
+      errorMessage: "",
     };
   } catch (e) {
-    console.error(e);
     if (e instanceof Error) {
       return {
         clicks: 0,
         isReady: false,
-        gameAccountPublicKey: '',
+        gameAccountPublicKey: "",
         errorMessage: e.message,
       };
     }
     return {
       clicks: 0,
       isReady: false,
-      gameAccountPublicKey: '',
+      gameAccountPublicKey: "",
       errorMessage: "unknown error",
     };
   }
@@ -74,11 +73,9 @@ async function isGameInitialized({
 
 async function saveClick({ wallet, endpoint }: WalletAndNetwork) {
   const program = await getProgram({ wallet, endpoint });
-  const games = await program.account.game.all();
+  const games = await myGames(wallet, await program.account.game.all());
   if (games.length !== 0) {
     const game = games[0];
-    console.log("game", game.publicKey.toBase58(), game);
-    console.log("current clicks", game.account.clicks);
     return await program.methods
       .click()
       .accounts({
@@ -110,6 +107,12 @@ async function getProgram({
     throw new Error("Solana program missing IDL");
   }
   return new Program(idl, programAddress, provider);
+}
+
+async function myGames(wallet: AnchorWallet, games: any[]): Promise<any[]> {
+  return games.filter(
+    (game) => game.account.player.toString() === wallet.publicKey.toBase58()
+  );
 }
 
 export { isGameInitialized, saveClick };

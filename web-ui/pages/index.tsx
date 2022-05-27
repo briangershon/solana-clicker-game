@@ -16,6 +16,7 @@ const Home: NextPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isGameReady, setIsGameReady] = useState(false);
   const [solanaExplorerLink, setSolanaExplorerLink] = useState("");
+  const [gameError, setGameError] = useState('');
 
   const { connected } = useWallet();
   const network = WalletAdapterNetwork.Devnet;
@@ -23,10 +24,17 @@ const Home: NextPage = () => {
   const wallet = useAnchorWallet();
 
   async function handleClick() {
+    setGameError('');
     if (wallet) {
-      await saveClick({ wallet, endpoint });
-      setClicks(clicks + 1);
-      setEffect(true);
+      try {
+        await saveClick({ wallet, endpoint });
+        setClicks(clicks + 1);
+        setEffect(true);
+      } catch (e) {
+        if (e instanceof Error) {
+          setGameError(e.message);
+        }
+      }
     }
   }
 
@@ -39,6 +47,12 @@ const Home: NextPage = () => {
         setSolanaExplorerLink(
           `https://explorer.solana.com/address/${gameState.gameAccountPublicKey}/anchor-account?cluster=${network}`
         );
+        setGameError(gameState.errorMessage);
+      } else {
+        setIsGameReady(false);
+        setClicks(0);
+        setSolanaExplorerLink("");
+        setGameError('');
       }
     }
     setIsConnected(connected);
@@ -62,6 +76,7 @@ const Home: NextPage = () => {
         <div className="flex flex-col sm:flex-row">
           <div className="p-4 flex flex-col items-center justify-between gap-3">
             <div className="flex flex-col items-center p-2">
+            {isGameReady && (<div className="m-2 text-red-500">{gameError}</div>)}
               {isGameReady && (
                 <div
                   onAnimationEnd={() => {
@@ -109,7 +124,7 @@ const Home: NextPage = () => {
               </div>
             )}
 
-            {!isGameReady && (
+            {!isGameReady && isConnected && (
               <div>
                 <p className="p-2">Game initializing...</p>
               </div>
