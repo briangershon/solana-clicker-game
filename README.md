@@ -6,7 +6,7 @@ Solana wallet support has only been tested on desktop web browsers.
 
 ## Tools and Frameworks
 
-- [Next.js](https://nextjs.org/)
+- [Next.js](https://nextjs.org/) with TypeScript
 - [tailwindcss](https://tailwindcss.com/)
 - [daisyUI](https://daisyui.com)
 - [Solana Wallet Adapter](https://github.com/solana-labs/wallet-adapter)

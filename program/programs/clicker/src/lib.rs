@@ -20,11 +20,10 @@ pub mod clicker {
     pub fn click(ctx: Context<Play>) -> Result<()> {
         let game: &mut Account<Game> = &mut ctx.accounts.game;
 
-        require_keys_eq!(
-            game.player.key(),
-            ctx.accounts.player.key(),
-            ClickerError::InvalidPlayer
-        );
+        // only allow player to increment their own account
+        if &game.player != ctx.accounts.player.key {
+            return Err(error!(ClickerError::InvalidPlayer));
+        }
 
         game.clicks += 1;
 

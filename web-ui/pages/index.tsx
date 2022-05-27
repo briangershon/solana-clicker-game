@@ -1,25 +1,63 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-import { useWallet } from "@solana/wallet-adapter-react";
+import { clusterApiUrl } from "@solana/web3.js";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+
+import { isGameInitialized, saveClick } from "../lib/clicker-anchor-client";
 
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);
   const [effect, setEffect] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [isGameReady, setIsGameReady] = useState(false);
+  const [solanaExplorerLink, setSolanaExplorerLink] = useState("");
+  const [gameError, setGameError] = useState("");
 
-  function handleClick() {
-    setClicks(clicks + 1);
+  const { connected } = useWallet();
+  const network = WalletAdapterNetwork.Devnet;
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const wallet = useAnchorWallet();
+
+  async function handleClick() {
+    setGameError("");
+    if (wallet) {
+      try {
+        await saveClick({ wallet, endpoint });
+        setClicks(clicks + 1);
+        setEffect(true);
+      } catch (e) {
+        if (e instanceof Error) {
+          setGameError(e.message);
+        }
+      }
+    }
   }
 
-  const [isConnected, setIsConnected] = useState(false);
-  const { connected } = useWallet();
-
   useEffect(() => {
+    async function initGame() {
+      if (wallet) {
+        const gameState = await isGameInitialized({ wallet, endpoint });
+        setIsGameReady(connected && gameState.isReady);
+        setClicks(gameState.clicks);
+        setSolanaExplorerLink(
+          `https://explorer.solana.com/address/${gameState.gameAccountPublicKey}/anchor-account?cluster=${network}`
+        );
+        setGameError(gameState.errorMessage);
+      } else {
+        setIsGameReady(false);
+        setClicks(0);
+        setSolanaExplorerLink("");
+        setGameError("");
+      }
+    }
     setIsConnected(connected);
-  }, [connected]);
+    initGame();
+  }, [connected, endpoint, network, wallet]);
 
   return (
     <div className="flex items-center flex-col sm:p-4 p-1">
@@ -38,7 +76,10 @@ const Home: NextPage = () => {
         <div className="flex flex-col sm:flex-row">
           <div className="p-4 flex flex-col items-center justify-between gap-3">
             <div className="flex flex-col items-center p-2">
-              {isConnected && (
+              {isGameReady && (
+                <div className="m-2 text-red-500">{gameError}</div>
+              )}
+              {isGameReady && (
                 <div
                   onAnimationEnd={() => {
                     setEffect(false);
@@ -51,15 +92,29 @@ const Home: NextPage = () => {
               {/* <div>0 cps</div> */}
             </div>
             <button
-              disabled={!isConnected}
+              disabled={!isGameReady}
               onClick={() => {
                 handleClick();
-                setEffect(true);
               }}
               className="btn btn-lg bg-primary hover:bg-primary-focus text-primary-content border-primary-focus border-4 h-36 w-36 rounded-full"
             >
               Click Me
             </button>
+
+            {isGameReady && (
+              <div>
+                View game{" "}
+                <a
+                  className="underline"
+                  href={solanaExplorerLink}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  details
+                </a>{" "}
+                on Solana.
+              </div>
+            )}
 
             {!isConnected && (
               <div>
@@ -68,6 +123,12 @@ const Home: NextPage = () => {
                   Solana wallet support has only been tested on desktop web
                   browsers.
                 </p>
+              </div>
+            )}
+
+            {!isGameReady && isConnected && (
+              <div>
+                <p className="p-2">Game initializing...</p>
               </div>
             )}
           </div>

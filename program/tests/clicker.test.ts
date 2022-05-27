@@ -2,9 +2,9 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Clicker } from "../target/types/clicker";
 
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import { expect } from 'chai';
+import chai from "chai";
+import chaiAsPromised from "chai-as-promised";
+import { expect } from "chai";
 chai.use(chaiAsPromised);
 
 describe("clicker", () => {
@@ -30,9 +30,7 @@ describe("clicker", () => {
     let gameState = await program.account.game.fetch(gameKeypair.publicKey);
 
     expect(gameState.clicks).to.equal(0);
-    expect(gameState.player)
-      .to
-      .eql(player.publicKey);
+    expect(gameState.player).to.eql(player.publicKey);
   });
 
   it("registers a click", async () => {
@@ -51,21 +49,17 @@ describe("clicker", () => {
 
     let gameState = await program.account.game.fetch(gameKeypair.publicKey);
     expect(gameState.clicks).to.equal(0);
-    expect(gameState.player)
-      .to
-      .eql(player.publicKey);
+    expect(gameState.player).to.eql(player.publicKey);
 
     // call click()
     await program.methods
       .click()
       .accounts({
         game: gameKeypair.publicKey,
-        player: player.publicKey,
       })
       .rpc();
 
     gameState = await program.account.game.fetch(gameKeypair.publicKey);
     expect(gameState.clicks).to.equal(1);
   });
-
 });
