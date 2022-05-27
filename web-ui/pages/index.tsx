@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [isGameReady, setIsGameReady] = useState(false);
   const [solanaExplorerLink, setSolanaExplorerLink] = useState("");
-  const [gameError, setGameError] = useState('');
+  const [gameError, setGameError] = useState("");
 
   const { connected } = useWallet();
   const network = WalletAdapterNetwork.Devnet;
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   const wallet = useAnchorWallet();
 
   async function handleClick() {
-    setGameError('');
+    setGameError("");
     if (wallet) {
       try {
         await saveClick({ wallet, endpoint });
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
         setIsGameReady(false);
         setClicks(0);
         setSolanaExplorerLink("");
-        setGameError('');
+        setGameError("");
       }
     }
     setIsConnected(connected);
@@ -76,7 +76,9 @@ const Home: NextPage = () => {
         <div className="flex flex-col sm:flex-row">
           <div className="p-4 flex flex-col items-center justify-between gap-3">
             <div className="flex flex-col items-center p-2">
-            {isGameReady && (<div className="m-2 text-red-500">{gameError}</div>)}
+              {isGameReady && (
+                <div className="m-2 text-red-500">{gameError}</div>
+              )}
               {isGameReady && (
                 <div
                   onAnimationEnd={() => {
@@ -106,7 +108,7 @@ const Home: NextPage = () => {
                   className="underline"
                   href={solanaExplorerLink}
                   target="_blank"
-                  rel="noopener"
+                  rel="noreferrer"
                 >
                   details
                 </a>{" "}
