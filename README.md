@@ -2,6 +2,8 @@
 
 An open-source web-based Clicker style game running on the Solana blockchain.
 
+![Game screenshot](./screenshots/home.png)
+
 Solana wallet support has only been tested on desktop web browsers.
 
 ## Tools and Frameworks
