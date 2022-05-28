@@ -7,8 +7,9 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import Leaderboard from "../components/Leaderboard";
 
-import { isGameInitialized, saveClick } from "../lib/clicker-anchor-client";
+import { getCurrentGame, saveClick } from "../lib/clicker-anchor-client";
 
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
   const [isGameReady, setIsGameReady] = useState(false);
   const [solanaExplorerLink, setSolanaExplorerLink] = useState("");
   const [gameError, setGameError] = useState("");
+  const [gameAccountPublicKey, setGameAccountPublicKey] = useState("");
 
   const { connected } = useWallet();
   const network = WalletAdapterNetwork.Devnet;
@@ -27,7 +29,7 @@ const Home: NextPage = () => {
     setGameError("");
     if (wallet) {
       try {
-        await saveClick({ wallet, endpoint });
+        await saveClick({ wallet, endpoint, gameAccountPublicKey });
         setClicks(clicks + 1);
         setEffect(true);
       } catch (e) {
@@ -41,16 +43,18 @@ const Home: NextPage = () => {
   useEffect(() => {
     async function initGame() {
       if (wallet) {
-        const gameState = await isGameInitialized({ wallet, endpoint });
+        const gameState = await getCurrentGame({ wallet, endpoint });
         setIsGameReady(connected && gameState.isReady);
         setClicks(gameState.clicks);
+        setGameAccountPublicKey(gameState.gameAccountPublicKey);
         setSolanaExplorerLink(
-          `https://explorer.solana.com/address/${gameState.gameAccountPublicKey}/anchor-account?cluster=${network}`
+          `https://explorer.solana.com/address/${gameAccountPublicKey}/anchor-account?cluster=${network}`
         );
         setGameError(gameState.errorMessage);
       } else {
         setIsGameReady(false);
         setClicks(0);
+        setGameAccountPublicKey("");
         setSolanaExplorerLink("");
         setGameError("");
       }
@@ -73,8 +77,8 @@ const Home: NextPage = () => {
       </div>
 
       <div>
-        <div className="flex flex-col sm:flex-row">
-          <div className="p-4 flex flex-col items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row gap-5">
+          <div className="p-4 flex flex-col items-center gap-3">
             <div className="flex flex-col items-center p-2">
               {isGameReady && (
                 <div className="m-2 text-red-500">{gameError}</div>
@@ -89,7 +93,6 @@ const Home: NextPage = () => {
                   {clicks} clicks
                 </div>
               )}
-              {/* <div>0 cps</div> */}
             </div>
             <button
               disabled={!isGameReady}
@@ -133,24 +136,15 @@ const Home: NextPage = () => {
             )}
           </div>
 
-          {/* <div className="sm:p-10 items-center flex flex-col justify-between">
-        <h2 className="text-xl font-bold">Extras</h2>
-        <div className="bg-orange-300 m-3 border-0 p-2 shadow-md w-48">
-          auto-clicker one
+          {wallet && (
+            <Leaderboard
+              wallet={wallet}
+              endpoint={endpoint}
+              gameAccountPublicKey={gameAccountPublicKey}
+              clicks={clicks}
+            />
+          )}
         </div>
-        <div className="bg-pink-300 m-3 border-0 p-2 shadow-md w-48">
-          auto-clicker two
-        </div>
-        <div className="bg-green-300 m-3 border-0 p-2 shadow-md w-48">
-          auto-clicker three
-        </div>
-      </div> */}
-        </div>
-        {/* <div className="p-2 m-3 flex">
-      <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus one</div>
-      <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus two</div>
-      <div className="bg-blue-300 m-3 w-28 h-16 shadow p-2">bonus three</div>
-    </div> */}
       </div>
     </div>
   );

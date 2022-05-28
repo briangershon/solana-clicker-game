@@ -8,9 +8,24 @@ const programAddress = new PublicKey(
   "Edo4xMkzByZTUiFXWf7wRpTKC2mGvpZpCWcby7REpn3w"
 );
 
+// Type of object coming back from `program.account.game.all()` call
+type ClickerGameObject = {
+  publicKey: PublicKey; // game's key
+  account: {
+    player: PublicKey; // player's key
+    clicks: number; // total clicks
+  };
+};
+
 type WalletAndNetwork = {
   wallet: AnchorWallet;
   endpoint: string;
+};
+
+type WalletAndGamePublicKey = {
+  wallet: AnchorWallet;
+  endpoint: string;
+  gameAccountPublicKey: string;
 };
 
 type GameState = {
@@ -20,13 +35,21 @@ type GameState = {
   errorMessage: string;
 };
 
-async function isGameInitialized({
+export type LeaderboardItem = {
+  gameAccountPublicKey: string;
+  clicks: number;
+};
+
+async function getCurrentGame({
   wallet,
   endpoint,
 }: WalletAndNetwork): Promise<GameState> {
   try {
     const program = await getProgram({ wallet, endpoint });
-    let games = await myGames(wallet, await program.account.game.all());
+    let games = await myGames(
+      wallet,
+      (await program.account.game.all()) as ClickerGameObject[]
+    );
 
     if (games.length === 0) {
       // create a new game
@@ -42,7 +65,10 @@ async function isGameInitialized({
         .rpc();
 
       // refresh list of games
-      games = await myGames(wallet, await program.account.game.all());
+      games = await myGames(
+        wallet,
+        (await program.account.game.all()) as ClickerGameObject[]
+      );
     }
 
     const game = games[0];
@@ -71,18 +97,18 @@ async function isGameInitialized({
   }
 }
 
-async function saveClick({ wallet, endpoint }: WalletAndNetwork) {
+async function saveClick({
+  wallet,
+  endpoint,
+  gameAccountPublicKey,
+}: WalletAndGamePublicKey) {
   const program = await getProgram({ wallet, endpoint });
-  const games = await myGames(wallet, await program.account.game.all());
-  if (games.length !== 0) {
-    const game = games[0];
-    return await program.methods
-      .click()
-      .accounts({
-        game: game.publicKey,
-      })
-      .rpc();
-  }
+  return await program.methods
+    .click()
+    .accounts({
+      game: gameAccountPublicKey,
+    })
+    .rpc();
 }
 
 async function getConnectionProvider({
@@ -109,10 +135,34 @@ async function getProgram({
   return new Program(idl, programAddress, provider);
 }
 
-async function myGames(wallet: AnchorWallet, games: any[]): Promise<any[]> {
+async function myGames(
+  wallet: AnchorWallet,
+  games: ClickerGameObject[]
+): Promise<ClickerGameObject[]> {
   return games.filter(
     (game) => game.account.player.toString() === wallet.publicKey.toBase58()
   );
 }
 
-export { isGameInitialized, saveClick };
+async function getLeaderboard({
+  wallet,
+  endpoint,
+}: WalletAndNetwork): Promise<LeaderboardItem[]> {
+  try {
+    const program = await getProgram({ wallet, endpoint });
+    let games = (await program.account.game.all()) as ClickerGameObject[];
+    const unsortedGames = games.map((g) => {
+      const item: LeaderboardItem = {
+        gameAccountPublicKey: g.account.player.toString(),
+        clicks: g.account.clicks,
+      };
+      return item;
+    });
+    return unsortedGames.sort((a, b) => b.clicks - a.clicks);
+  } catch (e) {
+    console.error("problem retrieving games");
+  }
+  return [];
+}
+
+export { getCurrentGame, saveClick, getLeaderboard };
