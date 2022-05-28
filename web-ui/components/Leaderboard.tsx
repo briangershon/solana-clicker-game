@@ -42,7 +42,7 @@ export default function Leaderboard({
   return (
     <div className="sm:p-10 items-center flex flex-col">
       <div className="bg-secondary text-secondary-content rounded p-2 mb-4">
-        Top {leaders.length < 10 ? leaders.length : 10}
+        Leaderboard
       </div>
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
@@ -57,7 +57,11 @@ export default function Leaderboard({
             {leaders.slice(0, 10).map((leader, index) => (
               <tr key={leader.gameAccountPublicKey}>
                 <th>{index + 1}</th>
-                <td>{displayShortPublicKey(leader.gameAccountPublicKey)}</td>
+                <td>
+                  {leader.gameAccountPublicKey === wallet.publicKey.toBase58()
+                    ? "You"
+                    : displayShortPublicKey(leader.gameAccountPublicKey)}
+                </td>
                 <td className="text-center">{leader.clicks}</td>
               </tr>
             ))}

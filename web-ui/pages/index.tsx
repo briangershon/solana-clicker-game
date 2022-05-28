@@ -93,7 +93,6 @@ const Home: NextPage = () => {
                   {clicks} clicks
                 </div>
               )}
-              {/* <div>0 cps</div> */}
             </div>
             <button
               disabled={!isGameReady}
@@ -137,7 +136,14 @@ const Home: NextPage = () => {
             )}
           </div>
 
-          {wallet && <Leaderboard wallet={wallet} endpoint={endpoint} gameAccountPublicKey={gameAccountPublicKey} clicks={clicks} />}
+          {wallet && (
+            <Leaderboard
+              wallet={wallet}
+              endpoint={endpoint}
+              gameAccountPublicKey={gameAccountPublicKey}
+              clicks={clicks}
+            />
+          )}
         </div>
       </div>
     </div>
