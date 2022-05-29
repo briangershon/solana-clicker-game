@@ -11,6 +11,9 @@ import Leaderboard from "../components/Leaderboard";
 
 import { getCurrentGame, saveClick } from "../lib/clicker-anchor-client";
 
+import FAQItem from "../components/FaqItem";
+import ExternalLink from "../components/ExternalLink";
+
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);
   const [effect, setEffect] = useState(false);
@@ -120,13 +123,14 @@ const Home: NextPage = () => {
             )}
 
             {!isConnected && (
-              <div>
-                <p className="p-2">Please connect your wallet to continue.</p>
-                <p className="p-2">
-                  Solana wallet support has only been tested on desktop web
-                  browsers.
-                </p>
-              </div>
+              <p className="p-2 text-center">
+                To play game, please click{" "}
+                <span className="font-bold">Select Wallet</span> above to choose
+                your Solana wallet.
+                <br />
+                <br />
+                See FAQs below for more information.
+              </p>
             )}
 
             {!isGameReady && isConnected && (
@@ -146,6 +150,91 @@ const Home: NextPage = () => {
           )}
         </div>
       </div>
+
+      <footer className="w-full mt-24 p-3 sm:w-3/4 text-xs">
+        <div className="text-2xl text-center">FAQs</div>
+
+        <FAQItem faq="Which web browsers are supported?">
+          <>
+            This game should run on any browser that support Web3 and a Solana
+            wallet. Officially tested on desktop Firefox and desktop Chrome.
+          </>
+        </FAQItem>
+
+        <FAQItem faq="What are the rules of this game?">
+          <>
+            <p>The goal is to be the player with the most clicks.</p>
+
+            <p className="mt-3">
+              Today players can only acquire clicks manually. The future plan is
+              to grow this into a full-fledged Clicker game where players earn
+              auto-clickers by purchasing NFTs. Each NFT will automatically
+              increase a player&apos;s points automatically.
+            </p>
+          </>
+        </FAQItem>
+        <FAQItem faq="How do I select a wallet and play the game?">
+          <>
+            <p>
+              This game runs in a desktop web-browser which connects directly
+              with the Solana blockchain. The blockchain is like a public
+              database that&apos;s keeping track of your score.
+            </p>
+            <p className="mt-3">
+              To connect to a blockchain, you need a wallet. Phantom is a Solana
+              wallet that installs on your browser, though there are many
+              choices. Visit{" "}
+              <ExternalLink
+                href="https://docs.solana.com/wallet-guide"
+                text="Solana Wallet Guide"
+              />{" "}
+              for more help. We support Phantom, Solflare, Torus, Glow and
+              Slope. Let us know if your favorite wallet is not on the list.
+            </p>
+            <p className="mt-3">
+              Once you have a wallet, and you&apos;ve created your account, you
+              can now choose <span className="font-bold">select wallet</span> to
+              connect and play.
+            </p>
+          </>
+        </FAQItem>
+        <FAQItem faq="What is Solana?">
+          <>
+            &quot;Solana is a decentralized blockchain built to enable scalable,
+            user-friendly apps for the world.&quot; (from{" "}
+            <ExternalLink href="https://solana.com/" text="solana.com" />)
+          </>
+        </FAQItem>
+        <FAQItem faq="How can I contribute to this open-source project?">
+          <p>
+            You can contribute in the form of feedback, marketing, design,
+            feature development, fixing bugs, or writing documentation. Please
+            visit our{" "}
+            <ExternalLink
+              href="https://github.com/briangershon/solana-clicker-game/issues"
+              text="issues board"
+            />{" "}
+            or{" "}
+            <ExternalLink
+              href="https://github.com/briangershon/solana-clicker-game/milestones"
+              text="milestones"
+            />
+            .
+          </p>
+        </FAQItem>
+        <FAQItem faq="How do I build my own application like this on Solana?">
+          <p>
+            This project is open-source and provides working examples of code
+            for building web apps that run on the Solana blockchain. Learn more
+            at{" "}
+            <ExternalLink
+              href="https://github.com/briangershon/solana-clicker-game"
+              text="github.com/briangershon/solana-clicker-game"
+            />
+            .
+          </p>
+        </FAQItem>
+      </footer>
     </div>
   );
 };
