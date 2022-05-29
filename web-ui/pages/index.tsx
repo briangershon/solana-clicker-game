@@ -169,7 +169,7 @@ const Home: NextPage = () => {
               Today players can only acquire clicks manually. The future plan is
               to grow this into a full-fledged Clicker game where players earn
               auto-clickers by purchasing NFTs. Each NFT will automatically
-              increase a player's points automatically.
+              increase a player&apos;s points automatically.
             </p>
           </>
         </FAQItem>
@@ -178,7 +178,7 @@ const Home: NextPage = () => {
             <p>
               This game runs in a desktop web-browser which connects directly
               with the Solana blockchain. The blockchain is like a public
-              database that's keeping track of your score.
+              database that&apos;s keeping track of your score.
             </p>
             <p className="mt-3">
               To connect to a blockchain, you need a wallet. Phantom is a Solana
@@ -192,16 +192,16 @@ const Home: NextPage = () => {
               Slope. Let us know if your favorite wallet is not on the list.
             </p>
             <p className="mt-3">
-              Once you have a wallet, and you've created your account, you can
-              now choose <span className="font-bold">select wallet</span> to
+              Once you have a wallet, and you&apos;ve created your account, you
+              can now choose <span className="font-bold">select wallet</span> to
               connect and play.
             </p>
           </>
         </FAQItem>
         <FAQItem faq="What is Solana?">
           <>
-            "Solana is a decentralized blockchain built to enable scalable,
-            user-friendly apps for the world." (from{" "}
+            &quot;Solana is a decentralized blockchain built to enable scalable,
+            user-friendly apps for the world.&quot; (from{" "}
             <ExternalLink href="https://solana.com/" text="solana.com" />)
           </>
         </FAQItem>
