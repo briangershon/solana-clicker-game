@@ -39,6 +39,10 @@ export default function Leaderboard({
     );
   }, [clicks]);
 
+  if (!leaders.length) {
+    return null;
+  }
+
   return (
     <div className="sm:p-10 items-center flex flex-col">
       <div className="bg-secondary text-secondary-content rounded p-2 mb-4">
