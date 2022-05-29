@@ -1,6 +1,6 @@
 # solana-clicker-game
 
-![Web UI tests](https://github.com/briangershon/solana-clicker-game/actions/workflows/continuous-integration.yaml/badge.svg)
+![UI test badge](https://github.com/briangershon/solana-clicker-game/actions/workflows/continuous-integration.yaml/badge.svg)
 
 An open-source web-based Clicker style game running on the Solana blockchain.
 

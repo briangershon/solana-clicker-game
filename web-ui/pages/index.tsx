@@ -7,12 +7,12 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import Leaderboard from "../components/Leaderboard";
+import Leaderboard from "@/components/Leaderboard";
 
-import { getCurrentGame, saveClick } from "../lib/clicker-anchor-client";
+import { getCurrentGame, saveClick } from "@/lib/clicker-anchor-client";
 
-import FAQItem from "../components/FaqItem";
-import ExternalLink from "../components/ExternalLink";
+import FAQItem from "@/components/FaqItem";
+import ExternalLink from "@/components/ExternalLink";
 
 const Home: NextPage = () => {
   const [clicks, setClicks] = useState(0);

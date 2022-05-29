@@ -1,4 +1,4 @@
-name: Solana Clicker UI tests
+name: UI tests
 on:
     push:
         paths-ignore:
