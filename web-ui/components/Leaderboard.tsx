@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { getLeaderboard, LeaderboardItem } from "../lib/clicker-anchor-client";
 import { displayShortPublicKey } from "../lib/utils";
@@ -6,7 +6,6 @@ import { displayShortPublicKey } from "../lib/utils";
 type Props = {
   wallet: AnchorWallet;
   endpoint: string;
-  gameAccountPublicKey: string;
   clicks: number;
 };
 
@@ -16,28 +15,31 @@ export default function Leaderboard({
   clicks, // current clicks in active game
 }: Props) {
   const [leaders, setLeaders] = useState<LeaderboardItem[]>([]);
+  const worldGameData = useRef<LeaderboardItem[]>([]);
 
-  // retrieve and store expensive leaderboard data (only call when wallet changes)
-  useMemo(async () => {
-    if (wallet) {
-      setLeaders(await getLeaderboard({ wallet, endpoint }));
-    }
+  // persist expensive "retrieve all game data" call in a Ref
+  useEffect(() => {
+    (async function getLeaderboardData() {
+      if (wallet) {
+        worldGameData.current = await getLeaderboard({ wallet, endpoint });
+        setLeaders(worldGameData.current);
+      }
+    })();
   }, [wallet, endpoint]);
 
+  // update existing leaderboard data with clicks from active game
+  // without reloading from Solana
   useEffect(() => {
-    // update current leaderboard with clicks from active game
-    setLeaders(
-      leaders.map((leader) => {
-        if (leader.gameAccountPublicKey === wallet.publicKey.toBase58()) {
-          return {
-            gameAccountPublicKey: leader.gameAccountPublicKey,
-            clicks: clicks,
-          };
-        }
-        return leader;
-      })
-    );
-  }, [clicks]);
+    worldGameData.current.forEach((game) => {
+      if (game.playerPublicKey === wallet.publicKey.toBase58()) {
+        game.clicks = clicks;
+      }
+    });
+  }, [clicks, wallet.publicKey]);
+
+  if (!leaders.length) {
+    return null;
+  }
 
   return (
     <div className="sm:p-10 items-center flex flex-col">
@@ -55,12 +57,12 @@ export default function Leaderboard({
           </thead>
           <tbody>
             {leaders.slice(0, 10).map((leader, index) => (
-              <tr key={leader.gameAccountPublicKey}>
+              <tr key={leader.playerPublicKey}>
                 <th>{index + 1}</th>
                 <td>
-                  {leader.gameAccountPublicKey === wallet.publicKey.toBase58()
+                  {leader.playerPublicKey === wallet.publicKey.toBase58()
                     ? "You"
-                    : displayShortPublicKey(leader.gameAccountPublicKey)}
+                    : displayShortPublicKey(leader.playerPublicKey)}
                 </td>
                 <td className="text-center">{leader.clicks}</td>
               </tr>

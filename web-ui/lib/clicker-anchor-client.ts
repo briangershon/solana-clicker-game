@@ -36,7 +36,7 @@ type GameState = {
 };
 
 export type LeaderboardItem = {
-  gameAccountPublicKey: string;
+  playerPublicKey: string;
   clicks: number;
 };
 
@@ -153,7 +153,7 @@ async function getLeaderboard({
     let games = (await program.account.game.all()) as ClickerGameObject[];
     const unsortedGames = games.map((g) => {
       const item: LeaderboardItem = {
-        gameAccountPublicKey: g.account.player.toString(),
+        playerPublicKey: g.account.player.toString(),
         clicks: g.account.clicks,
       };
       return item;
