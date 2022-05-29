@@ -141,12 +141,7 @@ const Home: NextPage = () => {
           </div>
 
           {wallet && (
-            <Leaderboard
-              wallet={wallet}
-              endpoint={endpoint}
-              gameAccountPublicKey={gameAccountPublicKey}
-              clicks={clicks}
-            />
+            <Leaderboard wallet={wallet} endpoint={endpoint} clicks={clicks} />
           )}
         </div>
       </div>
