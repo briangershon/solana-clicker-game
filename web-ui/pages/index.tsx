@@ -74,11 +74,11 @@ const Home: NextPage = () => {
 
       <div className="navbar mb-2 bg-base-300 text-base-content rounded-box sm:p-4">
         <div className="flex-1 text-xl font-mono">Solana Clicker</div>
-        <div className="badge badge-accent badge-outline">
-          <a href="#devnet">devnet</a>
-        </div>
-        <div className="flex-none">
+        <div>
           <WalletMultiButton />
+        </div>
+        <div className="badge badge-accent badge-outline flex-none XXXml-2">
+          <a href="#devnet">devnet</a>
         </div>
       </div>
 
@@ -147,11 +147,16 @@ const Home: NextPage = () => {
                 To play game, please click{" "}
                 <span className="font-bold">Select Wallet</span> above to choose
                 your Solana wallet.
-                <br />
-                <br />
-                See FAQs below for more information.
               </p>
             )}
+
+            <p>
+              See{" "}
+              <a className="underline" href="#faqs">
+                FAQs
+              </a>{" "}
+              below for more information.
+            </p>
 
             {!isGameReady && isConnected && (
               <div>
@@ -166,6 +171,7 @@ const Home: NextPage = () => {
         </div>
       </div>
 
+      <a id="faqs"></a>
       <footer className="w-full mt-24 p-3 sm:w-3/4 text-xs">
         <div className="text-2xl text-center">FAQs</div>
 
