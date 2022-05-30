@@ -84,7 +84,7 @@ const Home: NextPage = () => {
       }
     }
     fetchTestSol();
-  }, [connected, wallet]);
+  }, [connected, wallet, endpoint]);
 
   return (
     <div className="flex items-center flex-col sm:p-4 p-1">
@@ -116,9 +116,9 @@ const Home: NextPage = () => {
                       viewBox="0 0 24 24"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
@@ -200,8 +200,8 @@ const Home: NextPage = () => {
             <p>
               Yes, sort of. This game is being developed to learn and
               demonstrate techniques for building apps that interact with Solana
-              programs and Solana NFTs. It's in the form of a game with very
-              simple rules.
+              programs and Solana NFTs. It&apos;s in the form of a game with
+              very simple rules.
             </p>
             <p className="mt-3">
               All code is available open-source at{" "}
@@ -209,7 +209,7 @@ const Home: NextPage = () => {
                 href="https://github.com/briangershon/solana-clicker-game"
                 text="github.com/briangershon/solana-clicker-game"
               />
-              . Please visit if you'd like to learn more, or add features.
+              . Please visit if you&apos;d like to learn more, or add features.
             </p>
           </>
         </FAQItem>
@@ -265,14 +265,14 @@ const Home: NextPage = () => {
             </p>
             <ul className="mt-3 list-disc ml-5 text-secondary">
               <li>
-                This app is running on the Solana's{" "}
+                This app is running on the Solana&apos;s{" "}
                 <span className="font-bold">devnet</span> chain and not the
                 default <span className="font-bold">mainnet</span>.
               </li>
               <li>
-                This means you don't need to buy real SOL. Instead this app will
-                automatically airdrop you one test SOL for free if you have less
-                than 1 test SOL in your wallet.
+                This means you don&apos;t need to buy real SOL. Instead this app
+                will automatically airdrop you one test SOL for free if you have
+                less than 1 test SOL in your wallet.
               </li>
               {/* <li>
                 You need to make one change in your wallet. You can still the
@@ -302,11 +302,11 @@ const Home: NextPage = () => {
               <span className="font-bold">devnet</span>.
             </p>
             <p className="mt-3">
-              See "
+              See &quot;
               <a href="#wallet" className="underline">
                 How do I select a wallet and play the game?
               </a>
-              " FAQ for more info.
+              &quot; FAQ for more info.
             </p>
           </>
         </FAQItem>
