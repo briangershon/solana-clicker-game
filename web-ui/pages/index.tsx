@@ -9,7 +9,11 @@ import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Leaderboard from "@/components/Leaderboard";
 
-import { getCurrentGame, saveClick } from "@/lib/clicker-anchor-client";
+import {
+  airdrop,
+  getCurrentGame,
+  saveClick,
+} from "../lib/clicker-anchor-client";
 
 import FAQItem from "@/components/FaqItem";
 import ExternalLink from "@/components/ExternalLink";
@@ -65,6 +69,22 @@ const Home: NextPage = () => {
     setIsConnected(connected);
     initGame();
   }, [connected, endpoint, network, wallet, gameAccountPublicKey]);
+
+  // airdrop test SOL if on devnet and player has less than 1 test SOL
+  useEffect(() => {
+    async function fetchTestSol(): Promise<void> {
+      if (wallet) {
+        try {
+          await airdrop({ wallet, endpoint });
+        } catch (e) {
+          if (e instanceof Error) {
+            console.error(`Unable to airdrop 1 test SOL due to ${e.message}`);
+          }
+        }
+      }
+    }
+    fetchTestSol();
+  }, [connected, wallet]);
 
   return (
     <div className="flex items-center flex-col sm:p-4 p-1">
@@ -251,7 +271,8 @@ const Home: NextPage = () => {
               </li>
               <li>
                 This means you don't need to buy real SOL. Instead this app will
-                airdrop you test SOL to use for free.
+                automatically airdrop you one test SOL for free if you have less
+                than 1 test SOL in your wallet.
               </li>
               {/* <li>
                 You need to make one change in your wallet. You can still the

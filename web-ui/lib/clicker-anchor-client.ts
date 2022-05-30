@@ -165,4 +165,27 @@ async function getLeaderboard({
   return [];
 }
 
-export { getCurrentGame, saveClick, getLeaderboard };
+// if running on devnet, airdrop test SOL to player
+async function airdrop({ wallet, endpoint }: WalletAndNetwork): Promise<void> {
+  const AIRDROP_AMOUNT = 1000000000; // 1 SOL
+
+  // can only airdrop on devnet
+  if (endpoint !== "https://api.devnet.solana.com") return;
+
+  const provider = await getConnectionProvider({ wallet, endpoint });
+  const currentBalance = await provider.connection.getBalance(wallet.publicKey);
+
+  // don't airdrop if user already has at least 1 test SOL
+  if (currentBalance > AIRDROP_AMOUNT) return;
+
+  console.log("Airdropping 1 test SOL to your wallet...");
+
+  // otherwise, let's airdrop some test SOL!
+  const signature = await provider.connection.requestAirdrop(
+    wallet.publicKey,
+    AIRDROP_AMOUNT
+  );
+  await provider.connection.confirmTransaction(signature);
+}
+
+export { getCurrentGame, saveClick, getLeaderboard, airdrop };
