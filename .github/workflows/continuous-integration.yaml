@@ -1,0 +1,19 @@
+name: UI tests
+on:
+    push:
+        paths-ignore:
+            - '**.md'
+
+jobs:
+    run-jest-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '16.x'
+            - run: node --version
+            - run: yarn
+              working-directory: web-ui
+            - run: yarn test:ci
+              working-directory: web-ui
