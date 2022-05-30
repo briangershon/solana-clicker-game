@@ -74,6 +74,9 @@ const Home: NextPage = () => {
 
       <div className="navbar mb-2 bg-base-300 text-base-content rounded-box sm:p-4">
         <div className="flex-1 text-xl font-mono">Solana Clicker</div>
+        <div className="badge badge-accent badge-outline">
+          <a href="#devnet">devnet</a>
+        </div>
         <div className="flex-none">
           <WalletMultiButton />
         </div>
@@ -83,8 +86,25 @@ const Home: NextPage = () => {
         <div className="flex flex-col sm:flex-row gap-5">
           <div className="p-4 flex flex-col items-center gap-3">
             <div className="flex flex-col items-center p-2">
-              {isGameReady && (
-                <div className="m-2 text-red-500">{gameError}</div>
+              {isGameReady && gameError && (
+                <div className="alert alert-error shadow-lg">
+                  <div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="stroke-current flex-shrink-0 h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span>{gameError}</span>
+                  </div>
+                </div>
               )}
               {isGameReady && (
                 <div
@@ -149,6 +169,25 @@ const Home: NextPage = () => {
       <footer className="w-full mt-24 p-3 sm:w-3/4 text-xs">
         <div className="text-2xl text-center">FAQs</div>
 
+        <FAQItem faq="Is this a real game?">
+          <>
+            <p>
+              Yes, sort of. This game is being developed to learn and
+              demonstrate techniques for building apps that interact with Solana
+              programs and Solana NFTs. It's in the form of a game with very
+              simple rules.
+            </p>
+            <p className="mt-3">
+              All code is available open-source at{" "}
+              <ExternalLink
+                href="https://github.com/briangershon/solana-clicker-game"
+                text="github.com/briangershon/solana-clicker-game"
+              />
+              . Please visit if you'd like to learn more, or add features.
+            </p>
+          </>
+        </FAQItem>
+
         <FAQItem faq="Which web browsers are supported?">
           <>
             This game should run on any browser that support Web3 and a Solana
@@ -168,6 +207,8 @@ const Home: NextPage = () => {
             </p>
           </>
         </FAQItem>
+
+        <a id="wallet"></a>
         <FAQItem faq="How do I select a wallet and play the game?">
           <>
             <p>
@@ -187,12 +228,62 @@ const Home: NextPage = () => {
               Slope. Let us know if your favorite wallet is not on the list.
             </p>
             <p className="mt-3">
-              Once you have a wallet, and you&apos;ve created your account, you
-              can now choose <span className="font-bold">select wallet</span> to
-              connect and play.
+              Once you have a wallet, and you&apos;ve created your account in
+              the wallet, you can now choose{" "}
+              <span className="font-bold">select wallet</span> to connect and
+              play.
+            </p>
+            <p className="mt-3 text-secondary">
+              {" "}
+              <span>Important:</span>{" "}
+            </p>
+            <ul className="mt-3 list-disc ml-5 text-secondary">
+              <li>
+                This app is running on the Solana's{" "}
+                <span className="font-bold">devnet</span> chain and not the
+                default <span className="font-bold">mainnet</span>.
+              </li>
+              <li>
+                This means you don't need to buy real SOL. Instead this app will
+                airdrop you test SOL to use for free.
+              </li>
+              {/* <li>
+                You need to make one change in your wallet. You can still the
+                same same account as <span className="font-bold">mainnet</span>,
+                but you need to switch to{" "}
+                <span className="font-bold">devnet</span> instead of the default{" "}
+                <span className="font-bold">mainnet</span>. If using Phantom
+                Wallet here's how to{" "}
+                <ExternalLink
+                  href="https://hello-17.gitbook.io/crema-devnet-test-guide/switch-your-solana-wallet-to-devnet"
+                  text="Switch Your Solana Wallet to Devnet"
+                />
+                .
+              </li> */}
+            </ul>
+          </>
+        </FAQItem>
+
+        <a id="devnet"></a>
+        <FAQItem faq="What is devnet?">
+          <>
+            <p>
+              Solana has two networks. <span className="font-bold">devnet</span>{" "}
+              is for experimentation and{" "}
+              <span className="font-bold">mainnet</span> is for production apps.
+              Currently this app is running on{" "}
+              <span className="font-bold">devnet</span>.
+            </p>
+            <p className="mt-3">
+              See "
+              <a href="#wallet" className="underline">
+                How do I select a wallet and play the game?
+              </a>
+              " FAQ for more info.
             </p>
           </>
         </FAQItem>
+
         <FAQItem faq="What is Solana?">
           <>
             &quot;Solana is a decentralized blockchain built to enable scalable,
