@@ -1,43 +1,37 @@
 import { useState, useEffect, useRef } from "react";
-import { AnchorWallet } from "@solana/wallet-adapter-react";
-import { getLeaderboard, LeaderboardItem } from "../lib/clicker-anchor-client";
-import { displayShortPublicKey } from "../lib/utils";
+import { LeaderboardItem } from "@/lib/clicker-anchor-client";
+import { displayShortPublicKey } from "@/lib/utils";
 
 type Props = {
-  wallet: AnchorWallet;
-  endpoint: string;
+  leaders: LeaderboardItem[];
+  walletPublicKeyString: string;
   clicks: number;
 };
 
 export default function Leaderboard({
-  wallet,
-  endpoint,
-  clicks, // current clicks in active game
+  leaders, // all games retrieved from Solana
+  walletPublicKeyString, // current player
+  clicks, // current player's clicks
 }: Props) {
-  const [leaders, setLeaders] = useState<LeaderboardItem[]>([]);
-  const worldGameData = useRef<LeaderboardItem[]>([]);
-
-  // persist expensive "retrieve all game data" call in a Ref
-  useEffect(() => {
-    (async function getLeaderboardData() {
-      if (wallet) {
-        worldGameData.current = await getLeaderboard({ wallet, endpoint });
-        setLeaders(worldGameData.current);
-      }
-    })();
-  }, [wallet, endpoint]);
+  const [displayLeaders, setDisplayLeaders] = useState<LeaderboardItem[]>([]);
 
   // update existing leaderboard data with clicks from active game
   // without reloading from Solana
   useEffect(() => {
-    worldGameData.current.forEach((game) => {
-      if (game.playerPublicKey === wallet.publicKey.toBase58()) {
-        game.clicks = clicks;
-      }
-    });
-  }, [clicks, wallet.publicKey]);
+    setDisplayLeaders(
+      leaders.map((leader) => {
+        if (leader.playerPublicKey === walletPublicKeyString) {
+          return {
+            playerPublicKey: leader.playerPublicKey,
+            clicks: clicks,
+          };
+        }
+        return leader;
+      })
+    );
+  }, [clicks, walletPublicKeyString]);
 
-  if (!leaders.length) {
+  if (!displayLeaders.length) {
     return null;
   }
 
@@ -56,11 +50,11 @@ export default function Leaderboard({
             </tr>
           </thead>
           <tbody>
-            {leaders.slice(0, 10).map((leader, index) => (
+            {displayLeaders.slice(0, 10).map((leader, index) => (
               <tr key={leader.playerPublicKey}>
                 <th>{index + 1}</th>
                 <td>
-                  {leader.playerPublicKey === wallet.publicKey.toBase58()
+                  {leader.playerPublicKey === walletPublicKeyString
                     ? "You"
                     : displayShortPublicKey(leader.playerPublicKey)}
                 </td>

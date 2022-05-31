@@ -8,9 +8,9 @@ describe("Utils", () => {
     });
 
     it("displays empty shortened string if valid base58 value", () => {
-      const pk = "abcdefghijklmnopqrstuvwxyz01234567890abcdefg";
+      const pk = "abcdefabcdefabcdefabcdefabcdefabcdefabcdeffg";
       const result = displayShortPublicKey(pk);
-      expect(result).toBe("0xabcd..defg");
+      expect(result).toBe("0xabcd..effg");
     });
   });
 });
