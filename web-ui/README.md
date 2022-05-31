@@ -9,3 +9,11 @@ Frontend for Solana Clicker.
     yarn dev
 
     # open http://localhost:3000
+
+## How to run tests
+
+    # run tests and watch
+    yarn test
+
+    # run tests and exit
+    yardn test:ci
