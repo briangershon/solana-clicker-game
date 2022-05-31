@@ -18,18 +18,30 @@ export default function Leaderboard({
   // update existing leaderboard data with clicks from active game
   // without reloading from Solana
   useEffect(() => {
-    setDisplayLeaders(
-      leaders.map((leader) => {
-        if (leader.playerPublicKey === walletPublicKeyString) {
-          return {
-            playerPublicKey: leader.playerPublicKey,
-            clicks: clicks,
-          };
-        }
-        return leader;
-      })
-    );
-  }, [clicks, walletPublicKeyString]);
+    let foundCurrentUser = false;
+    const updatedLeaders = leaders.map((leader) => {
+      if (leader.playerPublicKey === walletPublicKeyString) {
+        foundCurrentUser = true;
+        return {
+          playerPublicKey: leader.playerPublicKey,
+          clicks: clicks,
+        };
+      }
+      return leader;
+    });
+
+    // if users first game (and they aren't in list of games retrieved) add 'em
+    if (walletPublicKeyString && clicks && !foundCurrentUser) {
+      updatedLeaders.push({
+        playerPublicKey: walletPublicKeyString,
+        clicks: clicks,
+      });
+    }
+
+    // sort by leader
+    const sortByClicks = updatedLeaders.sort((a, b) => b.clicks - a.clicks);
+    setDisplayLeaders(sortByClicks);
+  }, [clicks, walletPublicKeyString, leaders]);
 
   if (!displayLeaders.length) {
     return null;
@@ -53,10 +65,12 @@ export default function Leaderboard({
             {displayLeaders.slice(0, 10).map((leader, index) => (
               <tr key={leader.playerPublicKey}>
                 <th>{index + 1}</th>
-                <td>
-                  {leader.playerPublicKey === walletPublicKeyString
-                    ? "You"
-                    : displayShortPublicKey(leader.playerPublicKey)}
+                <td className="text-center">
+                  {leader.playerPublicKey === walletPublicKeyString ? (
+                    <b>You</b>
+                  ) : (
+                    displayShortPublicKey(leader.playerPublicKey)
+                  )}
                 </td>
                 <td className="text-center">{leader.clicks}</td>
               </tr>

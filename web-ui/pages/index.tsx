@@ -92,7 +92,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     (async function getLeaderboardData() {
       if (wallet) {
-        console.log("EXPENSIVE");
         setLeaders(await getLeaderboard({ wallet, endpoint }));
       }
     })();

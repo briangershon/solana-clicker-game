@@ -151,14 +151,13 @@ async function getLeaderboard({
   try {
     const program = await getProgram({ wallet, endpoint });
     let games = (await program.account.game.all()) as ClickerGameObject[];
-    const unsortedGames = games.map((g) => {
+    return games.map((g) => {
       const item: LeaderboardItem = {
         playerPublicKey: g.account.player.toString(),
         clicks: g.account.clicks,
       };
       return item;
     });
-    return unsortedGames.sort((a, b) => b.clicks - a.clicks);
   } catch (e) {
     console.error("problem retrieving games");
   }
