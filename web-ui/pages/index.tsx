@@ -8,6 +8,7 @@ import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Leaderboard from "@/components/Leaderboard";
+import { getLeaderboard, LeaderboardItem } from "@/lib/clicker-anchor-client";
 
 import {
   airdrop,
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
   const [solanaExplorerLink, setSolanaExplorerLink] = useState("");
   const [gameError, setGameError] = useState("");
   const [gameAccountPublicKey, setGameAccountPublicKey] = useState("");
+  const [leaders, setLeaders] = useState<LeaderboardItem[]>([]);
 
   const { connected } = useWallet();
   const network = WalletAdapterNetwork.Devnet;
@@ -85,6 +87,15 @@ const Home: NextPage = () => {
     }
     fetchTestSol();
   }, [connected, wallet, endpoint]);
+
+  // For leaderboard, persist expensive "retrieve all game data" via useState()
+  useEffect(() => {
+    (async function getLeaderboardData() {
+      if (wallet) {
+        setLeaders(await getLeaderboard({ wallet, endpoint }));
+      }
+    })();
+  }, [wallet, endpoint]);
 
   return (
     <div className="flex items-center flex-col sm:p-4 p-1">
@@ -186,7 +197,11 @@ const Home: NextPage = () => {
           </div>
 
           {wallet && (
-            <Leaderboard wallet={wallet} endpoint={endpoint} clicks={clicks} />
+            <Leaderboard
+              leaders={leaders}
+              walletPublicKeyString={wallet.publicKey.toBase58()}
+              clicks={clicks}
+            />
           )}
         </div>
       </div>
