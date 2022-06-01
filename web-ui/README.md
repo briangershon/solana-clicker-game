@@ -16,4 +16,4 @@ Frontend for Solana Clicker.
     yarn test
 
     # run tests and exit
-    yardn test:ci
+    yarn test:ci
