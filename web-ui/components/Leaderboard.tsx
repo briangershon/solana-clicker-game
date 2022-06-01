@@ -49,22 +49,20 @@ export default function Leaderboard({
 
   return (
     <div className="sm:p-10 items-center flex flex-col">
-      <div className="bg-secondary text-secondary-content rounded p-2 mb-4">
-        Leaderboard
-      </div>
+      <div className="text-2xl mb-4">Leaderboard</div>
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
           <thead>
             <tr>
-              <th></th>
-              <th>Player</th>
-              <th>Total Clicks</th>
+              <th className="text-center">Rank</th>
+              <th className="text-center">Player</th>
+              <th className="text-center">Total Clicks</th>
             </tr>
           </thead>
           <tbody>
             {displayLeaders.slice(0, 10).map((leader, index) => (
               <tr key={leader.playerPublicKey}>
-                <th>{index + 1}</th>
+                <th className="text-center">{index + 1}</th>
                 <td className="text-center">
                   {leader.playerPublicKey === walletPublicKeyString ? (
                     <b>You</b>
