@@ -101,6 +101,14 @@ const Home: NextPage = () => {
     <div className="flex items-center flex-col sm:p-4 p-1">
       <Head>
         <title>Solana Clicker</title>
+        <meta property="og:title" content="Solana Clicker is an open-source web-based Solana blockchain game for desktop web browsers.">
+	<meta property="og:description" content="Solana Clicker is an open-source game being developed to learn and demonstrate techniques for integrating with Solana programs and Solana NFTs"> 
+
+ 
+ <meta property="og:image" content="https://storage.getblock.io/web/blog/article-images/Chainlink%20%281%29.svg">
+<meta property="og:image:width" content="1920">
+<meta property="og:image:height" content="1280"> 
+<meta property="og:image:alt" content="Solana Clicker game">
       </Head>
 
       <div className="navbar mb-2 bg-base-300 text-base-content rounded-box sm:p-4">
