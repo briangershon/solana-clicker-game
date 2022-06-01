@@ -207,7 +207,7 @@ const Home: NextPage = () => {
       </div>
 
       <a id="faqs"></a>
-      <footer className="w-full mt-24 p-3 sm:w-3/4 text-xs">
+      <footer className="w-full mt-24 p-3 sm:w-3/4 xl:w-2/3 text-xs">
         <div className="text-2xl text-center">FAQs</div>
 
         <FAQItem faq="Is this a real game?">
