@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { LeaderboardItem } from "@/lib/clicker-anchor-client";
 import { displayShortPublicKey } from "@/lib/utils";
+
+import { LeaderboardItem } from "@/types/index";
 
 type Props = {
   leaders: LeaderboardItem[];

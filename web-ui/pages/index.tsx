@@ -8,7 +8,8 @@ import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Leaderboard from "@/components/Leaderboard";
-import { getLeaderboard, LeaderboardItem } from "@/lib/clicker-anchor-client";
+import { getLeaderboard } from "@/lib/clicker-anchor-client";
+import { LeaderboardItem } from "@/types/index";
 
 import {
   airdrop,
