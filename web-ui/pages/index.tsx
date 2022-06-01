@@ -9,7 +9,9 @@ import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Leaderboard from "@/components/Leaderboard";
 import { getLeaderboard } from "@/lib/clicker-anchor-client";
-import { LeaderboardItem } from "@/types/index";
+import { LeaderboardItem, NFT, ClickerNFT } from "@/types/index";
+import { NFTWallet } from "@/components/NFTWallet";
+import { getNFTs, fetchNFTMetadata } from "@/lib/nfts";
 
 import {
   airdrop,
@@ -29,6 +31,7 @@ const Home: NextPage = () => {
   const [gameError, setGameError] = useState("");
   const [gameAccountPublicKey, setGameAccountPublicKey] = useState("");
   const [leaders, setLeaders] = useState<LeaderboardItem[]>([]);
+  const [nfts, setNfts] = useState<ClickerNFT[]>([]);
 
   const { connected } = useWallet();
   const network = WalletAdapterNetwork.Devnet;
@@ -96,6 +99,15 @@ const Home: NextPage = () => {
         setLeaders(await getLeaderboard({ wallet, endpoint }));
       }
     })();
+  }, [wallet, endpoint]);
+
+  useEffect(() => {
+    async function retrieveNFTs() {
+      if (wallet) {
+        setNfts(await getNFTs({ wallet, endpoint }));
+      }
+    }
+    retrieveNFTs();
   }, [wallet, endpoint]);
 
   return (
@@ -206,6 +218,8 @@ const Home: NextPage = () => {
           )}
         </div>
       </div>
+
+      {wallet && <NFTWallet nfts={nfts} />}
 
       <a id="faqs"></a>
       <footer className="w-full mt-24 p-3 sm:w-3/4 xl:w-2/3 text-xs">

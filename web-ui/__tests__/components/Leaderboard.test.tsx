@@ -1,4 +1,4 @@
-import { getByRole, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import Leaderboard from "@/components/Leaderboard";
 import { LeaderboardItem } from "@/types/index";
 
