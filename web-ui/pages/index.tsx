@@ -108,7 +108,7 @@ const Home: NextPage = () => {
  <meta property="og:image" content="https://storage.getblock.io/web/blog/article-images/Chainlink%20%281%29.svg">
 <meta property="og:image:width" content="1920">
 <meta property="og:image:height" content="1280"> 
-<meta property="og:image:alt" content="Solana Clicker game">
+        
       </Head>
 
       <div className="navbar mb-2 bg-base-300 text-base-content rounded-box sm:p-4">
