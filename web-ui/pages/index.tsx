@@ -101,203 +101,203 @@ const Home: NextPage = () => {
     <div className="flex items-center flex-col sm:p-4 p-1">
       <Head>
         <title>Solana Clicker</title>
-        <meta property="og:title" content="Solana Clicker is an open-source web-based Solana blockchain game for desktop web browsers.">
-	<meta property="og:description" content="Solana Clicker is an open-source game being developed to learn and demonstrate techniques for integrating with Solana programs and Solana NFTs"> 
+        <meta property="og:title" content="Solana Clicker is an open-source web-based Solana blockchain game for desktop web browsers."/>
+          <meta property="og:description" content="Solana Clicker is an open-source game being developed to learn and demonstrate techniques for integrating with Solana programs and Solana NFTs" />
 
- 
- <meta property="og:image" content="https://storage.getblock.io/web/blog/article-images/Chainlink%20%281%29.svg">
-<meta property="og:image:width" content="1920">
-<meta property="og:image:height" content="1280"> 
-        
+
+          <meta property="og:image" content="https://storage.getblock.io/web/blog/article-images/Chainlink%20%281%29.svg">
+            <meta property="og:image:width" content="1920"/>
+              <meta property="og:image:height" content="1280"/>
+
       </Head>
+     </div>
+              <div className="navbar mb-2 bg-base-300 text-base-content rounded-box sm:p-4">
+                <div className="flex-1 text-xl font-mono">Solana Clicker</div>
+                <div>
+                  <WalletMultiButton />
+                </div>
+                <div className="badge badge-accent badge-outline flex-none XXXml-2">
+                  <a href="#devnet">devnet</a>
+                </div>
+              </div>
 
-      <div className="navbar mb-2 bg-base-300 text-base-content rounded-box sm:p-4">
-        <div className="flex-1 text-xl font-mono">Solana Clicker</div>
-        <div>
-          <WalletMultiButton />
-        </div>
-        <div className="badge badge-accent badge-outline flex-none XXXml-2">
-          <a href="#devnet">devnet</a>
-        </div>
-      </div>
-
-      <div>
-        <div className="flex flex-col sm:flex-row gap-5">
-          <div className="p-4 flex flex-col items-center gap-3">
-            <div className="flex flex-col items-center p-2">
-              {isGameReady && gameError && (
-                <div className="alert alert-error shadow-lg">
-                  <div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="stroke-current flex-shrink-0 h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
+              <div>
+                <div className="flex flex-col sm:flex-row gap-5">
+                  <div className="p-4 flex flex-col items-center gap-3">
+                    <div className="flex flex-col items-center p-2">
+                      {isGameReady && gameError && (
+                        <div className="alert alert-error shadow-lg">
+                          <div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="stroke-current flex-shrink-0 h-6 w-6"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            <span>{gameError}</span>
+                          </div>
+                        </div>
+                      )}
+                      {isGameReady && (
+                        <div
+                          onAnimationEnd={() => {
+                            setEffect(false);
+                          }}
+                          className={`${effect && "animate-wiggle"}`}
+                        >
+                          {clicks} clicks
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      disabled={!isGameReady}
+                      onClick={() => {
+                        handleClick();
+                      }}
+                      className="btn btn-lg bg-primary hover:bg-primary-focus text-primary-content border-primary-focus border-4 h-36 w-36 rounded-full"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>{gameError}</span>
+                      Click Me
+                    </button>
+
+                    {isGameReady && (
+                      <div>
+                        View game{" "}
+                        <a
+                          className="underline"
+                          href={solanaExplorerLink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          details
+                        </a>{" "}
+                        on Solana.
+                      </div>
+                    )}
+
+                    {!isConnected && (
+                      <p className="p-2 text-center">
+                        To play game, please click{" "}
+                        <span className="font-bold">Select Wallet</span> above to choose
+                        your Solana wallet.
+                      </p>
+                    )}
+
+                    <p>
+                      See{" "}
+                      <a className="underline" href="#faqs">
+                        FAQs
+                      </a>{" "}
+                      below for more information.
+                    </p>
+
+                    {!isGameReady && isConnected && (
+                      <div>
+                        <p className="p-2">Game initializing...</p>
+                      </div>
+                    )}
                   </div>
+
+                  {wallet && (
+                    <Leaderboard
+                      leaders={leaders}
+                      walletPublicKeyString={wallet.publicKey.toBase58()}
+                      clicks={clicks}
+                    />
+                  )}
                 </div>
-              )}
-              {isGameReady && (
-                <div
-                  onAnimationEnd={() => {
-                    setEffect(false);
-                  }}
-                  className={`${effect && "animate-wiggle"}`}
-                >
-                  {clicks} clicks
-                </div>
-              )}
-            </div>
-            <button
-              disabled={!isGameReady}
-              onClick={() => {
-                handleClick();
-              }}
-              className="btn btn-lg bg-primary hover:bg-primary-focus text-primary-content border-primary-focus border-4 h-36 w-36 rounded-full"
-            >
-              Click Me
-            </button>
-
-            {isGameReady && (
-              <div>
-                View game{" "}
-                <a
-                  className="underline"
-                  href={solanaExplorerLink}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  details
-                </a>{" "}
-                on Solana.
               </div>
-            )}
 
-            {!isConnected && (
-              <p className="p-2 text-center">
-                To play game, please click{" "}
-                <span className="font-bold">Select Wallet</span> above to choose
-                your Solana wallet.
-              </p>
-            )}
+              <a id="faqs"></a>
+              <footer className="w-full mt-24 p-3 sm:w-3/4 xl:w-2/3 text-xs">
+                <div className="text-2xl text-center">FAQs</div>
 
-            <p>
-              See{" "}
-              <a className="underline" href="#faqs">
-                FAQs
-              </a>{" "}
-              below for more information.
-            </p>
+                <FAQItem faq="Is this a real game?">
+                  <>
+                    <p>
+                      Yes, sort of. This game is being developed to learn and
+                      demonstrate techniques for building apps that interact with Solana
+                      programs and Solana NFTs. It&apos;s in the form of a game with
+                      very simple rules.
+                    </p>
+                    <p className="mt-3">
+                      All code is available open-source at{" "}
+                      <ExternalLink
+                        href="https://github.com/briangershon/solana-clicker-game"
+                        text="github.com/briangershon/solana-clicker-game"
+                      />
+                      . Please visit if you&apos;d like to learn more, or add features.
+                    </p>
+                  </>
+                </FAQItem>
 
-            {!isGameReady && isConnected && (
-              <div>
-                <p className="p-2">Game initializing...</p>
-              </div>
-            )}
-          </div>
+                <FAQItem faq="Which web browsers are supported?">
+                  <>
+                    This game should run on any browser that support Web3 and a Solana
+                    wallet. Officially tested on desktop Firefox and desktop Chrome.
+                  </>
+                </FAQItem>
 
-          {wallet && (
-            <Leaderboard
-              leaders={leaders}
-              walletPublicKeyString={wallet.publicKey.toBase58()}
-              clicks={clicks}
-            />
-          )}
-        </div>
-      </div>
+                <FAQItem faq="What are the rules of this game?">
+                  <>
+                    <p>The goal is to be the player with the most clicks.</p>
 
-      <a id="faqs"></a>
-      <footer className="w-full mt-24 p-3 sm:w-3/4 xl:w-2/3 text-xs">
-        <div className="text-2xl text-center">FAQs</div>
+                    <p className="mt-3">
+                      Today players can only acquire clicks manually. The future plan is
+                      to grow this into a full-fledged Clicker game where players earn
+                      auto-clickers by purchasing NFTs. Each NFT will automatically
+                      increase a player&apos;s points automatically.
+                    </p>
+                  </>
+                </FAQItem>
 
-        <FAQItem faq="Is this a real game?">
-          <>
-            <p>
-              Yes, sort of. This game is being developed to learn and
-              demonstrate techniques for building apps that interact with Solana
-              programs and Solana NFTs. It&apos;s in the form of a game with
-              very simple rules.
-            </p>
-            <p className="mt-3">
-              All code is available open-source at{" "}
-              <ExternalLink
-                href="https://github.com/briangershon/solana-clicker-game"
-                text="github.com/briangershon/solana-clicker-game"
-              />
-              . Please visit if you&apos;d like to learn more, or add features.
-            </p>
-          </>
-        </FAQItem>
-
-        <FAQItem faq="Which web browsers are supported?">
-          <>
-            This game should run on any browser that support Web3 and a Solana
-            wallet. Officially tested on desktop Firefox and desktop Chrome.
-          </>
-        </FAQItem>
-
-        <FAQItem faq="What are the rules of this game?">
-          <>
-            <p>The goal is to be the player with the most clicks.</p>
-
-            <p className="mt-3">
-              Today players can only acquire clicks manually. The future plan is
-              to grow this into a full-fledged Clicker game where players earn
-              auto-clickers by purchasing NFTs. Each NFT will automatically
-              increase a player&apos;s points automatically.
-            </p>
-          </>
-        </FAQItem>
-
-        <a id="wallet"></a>
-        <FAQItem faq="How do I select a wallet and play the game?">
-          <>
-            <p>
-              This game runs in a desktop web-browser which connects directly
-              with the Solana blockchain. The blockchain is like a public
-              database that&apos;s keeping track of your score.
-            </p>
-            <p className="mt-3">
-              To connect to a blockchain, you need a wallet. Phantom is a Solana
-              wallet that installs on your browser, though there are many
-              choices. Visit{" "}
-              <ExternalLink
-                href="https://docs.solana.com/wallet-guide"
-                text="Solana Wallet Guide"
-              />{" "}
-              for more help. We support Phantom, Solflare, Torus, Glow and
-              Slope. Let us know if your favorite wallet is not on the list.
-            </p>
-            <p className="mt-3">
-              Once you have a wallet, and you&apos;ve created your account in
-              the wallet, you can now choose{" "}
-              <span className="font-bold">select wallet</span> to connect and
-              play.
-            </p>
-            <p className="mt-3 text-secondary">
-              {" "}
-              <span>Important:</span>{" "}
-            </p>
-            <ul className="mt-3 list-disc ml-5 text-secondary">
-              <li>
-                This app is running on the Solana&apos;s{" "}
-                <span className="font-bold">devnet</span> chain and not the
-                default <span className="font-bold">mainnet</span>.
-              </li>
-              <li>
-                This means you don&apos;t need to buy real SOL. Instead this app
-                will automatically airdrop you one test SOL for free if you have
-                less than 1 test SOL in your wallet.
-              </li>
-              {/* <li>
+                <a id="wallet"></a>
+                <FAQItem faq="How do I select a wallet and play the game?">
+                  <>
+                    <p>
+                      This game runs in a desktop web-browser which connects directly
+                      with the Solana blockchain. The blockchain is like a public
+                      database that&apos;s keeping track of your score.
+                    </p>
+                    <p className="mt-3">
+                      To connect to a blockchain, you need a wallet. Phantom is a Solana
+                      wallet that installs on your browser, though there are many
+                      choices. Visit{" "}
+                      <ExternalLink
+                        href="https://docs.solana.com/wallet-guide"
+                        text="Solana Wallet Guide"
+                      />{" "}
+                      for more help. We support Phantom, Solflare, Torus, Glow and
+                      Slope. Let us know if your favorite wallet is not on the list.
+                    </p>
+                    <p className="mt-3">
+                      Once you have a wallet, and you&apos;ve created your account in
+                      the wallet, you can now choose{" "}
+                      <span className="font-bold">select wallet</span> to connect and
+                      play.
+                    </p>
+                    <p className="mt-3 text-secondary">
+                      {" "}
+                      <span>Important:</span>{" "}
+                    </p>
+                    <ul className="mt-3 list-disc ml-5 text-secondary">
+                      <li>
+                        This app is running on the Solana&apos;s{" "}
+                        <span className="font-bold">devnet</span> chain and not the
+                        default <span className="font-bold">mainnet</span>.
+                      </li>
+                      <li>
+                        This means you don&apos;t need to buy real SOL. Instead this app
+                        will automatically airdrop you one test SOL for free if you have
+                        less than 1 test SOL in your wallet.
+                      </li>
+                      {/* <li>
                 You need to make one change in your wallet. You can still the
                 same same account as <span className="font-bold">mainnet</span>,
                 but you need to switch to{" "}
@@ -310,68 +310,69 @@ const Home: NextPage = () => {
                 />
                 .
               </li> */}
-            </ul>
-          </>
-        </FAQItem>
+                    </ul>
+                  </>
+                </FAQItem>
 
-        <a id="devnet"></a>
-        <FAQItem faq="What is devnet?">
-          <>
-            <p>
-              Solana has two networks. <span className="font-bold">devnet</span>{" "}
-              is for experimentation and{" "}
-              <span className="font-bold">mainnet</span> is for production apps.
-              Currently this app is running on{" "}
-              <span className="font-bold">devnet</span>.
-            </p>
-            <p className="mt-3">
-              See &quot;
-              <a href="#wallet" className="underline">
-                How do I select a wallet and play the game?
-              </a>
-              &quot; FAQ for more info.
-            </p>
-          </>
-        </FAQItem>
+                <a id="devnet"></a>
+                <FAQItem faq="What is devnet?">
+                  <>
+                    <p>
+                      Solana has two networks. <span className="font-bold">devnet</span>{" "}
+                      is for experimentation and{" "}
+                      <span className="font-bold">mainnet</span> is for production apps.
+                      Currently this app is running on{" "}
+                      <span className="font-bold">devnet</span>.
+                    </p>
+                    <p className="mt-3">
+                      See &quot;
+                      <a href="#wallet" className="underline">
+                        How do I select a wallet and play the game?
+                      </a>
+                      &quot; FAQ for more info.
+                    </p>
+                  </>
+                </FAQItem>
 
-        <FAQItem faq="What is Solana?">
-          <>
-            &quot;Solana is a decentralized blockchain built to enable scalable,
-            user-friendly apps for the world.&quot; (from{" "}
-            <ExternalLink href="https://solana.com/" text="solana.com" />)
-          </>
-        </FAQItem>
-        <FAQItem faq="How can I contribute to this open-source project?">
-          <p>
-            You can contribute in the form of feedback, marketing, design,
-            feature development, fixing bugs, or writing documentation. Please
-            visit our{" "}
-            <ExternalLink
-              href="https://github.com/briangershon/solana-clicker-game/issues"
-              text="issues board"
-            />{" "}
-            or{" "}
-            <ExternalLink
-              href="https://github.com/briangershon/solana-clicker-game/milestones"
-              text="milestones"
-            />
-            .
-          </p>
-        </FAQItem>
-        <FAQItem faq="How do I build my own application like this on Solana?">
-          <p>
-            This project is open-source and provides working examples of code
-            for building web apps that run on the Solana blockchain. Learn more
-            at{" "}
-            <ExternalLink
-              href="https://github.com/briangershon/solana-clicker-game"
-              text="github.com/briangershon/solana-clicker-game"
-            />
-            .
-          </p>
-        </FAQItem>
-      </footer>
-    </div>
+                <FAQItem faq="What is Solana?">
+                  <>
+                    &quot;Solana is a decentralized blockchain built to enable scalable,
+                    user-friendly apps for the world.&quot; (from{" "}
+                    <ExternalLink href="https://solana.com/" text="solana.com" />)
+                  </>
+                </FAQItem>
+                <FAQItem faq="How can I contribute to this open-source project?">
+                  <p>
+                    You can contribute in the form of feedback, marketing, design,
+                    feature development, fixing bugs, or writing documentation. Please
+                    visit our{" "}
+                    <ExternalLink
+                      href="https://github.com/briangershon/solana-clicker-game/issues"
+                      text="issues board"
+                    />{" "}
+                    or{" "}
+                    <ExternalLink
+                      href="https://github.com/briangershon/solana-clicker-game/milestones"
+                      text="milestones"
+                    />
+                    .
+                  </p>
+                </FAQItem>
+                <FAQItem faq="How do I build my own application like this on Solana?">
+                  <p>
+                    This project is open-source and provides working examples of code
+                    for building web apps that run on the Solana blockchain. Learn more
+                    at{" "}
+                    <ExternalLink
+                      href="https://github.com/briangershon/solana-clicker-game"
+                      text="github.com/briangershon/solana-clicker-game"
+                    />
+                    .
+                  </p>
+                </FAQItem>
+              </footer>
+            </div>
+        
   );
 };
 
