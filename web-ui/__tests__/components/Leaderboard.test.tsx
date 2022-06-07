@@ -1,6 +1,6 @@
-import { getByRole, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import Leaderboard from "@/components/Leaderboard";
-import { LeaderboardItem } from "@/lib/clicker-anchor-client";
+import { LeaderboardItem } from "@/types/index";
 
 describe("Leaderboard", () => {
   it("is hidden if there is no data", () => {
