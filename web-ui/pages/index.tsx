@@ -100,7 +100,10 @@ const Home: NextPage = () => {
   return (
     <div className="flex items-center flex-col sm:p-4 p-1">
       <Head>
-        <meta property="og:title" content="Solana Clicker is an open-source web-based Solana blockchain game for desktop web browsers." />
+        <meta
+          property="og:title"
+          content="Solana Clicker is an open-source web-based Solana blockchain game for desktop web browsers."
+        />
         <meta
           property="og:description"
           content="Solana Clicker is an open-source game being developed to learn and demonstrate techniques for integrating with Solana programs and Solana NFTs
@@ -115,7 +118,10 @@ const Home: NextPage = () => {
         <meta property="og:image:alt" content="Solana Clicker logo " />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@digitalocean" />
-        <meta name="twitter:title" content="Solana Clicker is an open-source web-based Solana blockchain game for desktop web browsers." />
+        <meta
+          name="twitter:title"
+          content="Solana Clicker is an open-source web-based Solana blockchain game for desktop web browsers."
+        />
         <meta
           name="twitter:description"
           content="Solana Clicker is an open-source game being developed to learn and demonstrate techniques for integrating with Solana programs and Solana NFTs"
