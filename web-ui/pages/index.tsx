@@ -20,6 +20,12 @@ import FAQItem from "@/components/FaqItem";
 import ExternalLink from "@/components/ExternalLink";
 
 const Home: NextPage = () => {
+  const metaTitle = "Solana Clicker";
+  const metaDescription =
+    "Solana Clicker is an open-source game being developed to learn and demonstrate techniques for integrating with Solana programs and Solana NFTs.";
+  const metaAbsoluteUrl = "https://solana-clicker.netlify.app/";
+  const metaImageUrl = "https://solana-clicker.netlify.app/home.png";
+
   const [clicks, setClicks] = useState(0);
   const [effect, setEffect] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
@@ -100,7 +106,20 @@ const Home: NextPage = () => {
   return (
     <div className="flex items-center flex-col sm:p-4 p-1">
       <Head>
-        <title>Solana Clicker</title>
+        <title>{metaTitle}</title>
+        <meta name="title" content={metaTitle} />
+        <meta name="description" content={metaDescription} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:url" content={metaAbsoluteUrl} />
+        <meta property="og:image" content={metaImageUrl} />
+        <meta property="og:description" content={metaDescription} />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={metaImageUrl} />
       </Head>
 
       <div className="navbar mb-2 bg-base-300 text-base-content rounded-box sm:p-4">
