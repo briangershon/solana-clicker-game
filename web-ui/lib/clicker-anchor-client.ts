@@ -4,41 +4,17 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import { AnchorWallet } from "@solana/wallet-adapter-react";
 import { Program, AnchorProvider, Provider, web3 } from "@project-serum/anchor";
 
+import {
+  WalletAndNetwork,
+  WalletAndGamePublicKey,
+  GameState,
+  ClickerGameObject,
+  LeaderboardItem,
+} from "@/types/index";
+
 const programAddress = new PublicKey(
   "Edo4xMkzByZTUiFXWf7wRpTKC2mGvpZpCWcby7REpn3w"
 );
-
-// Type of object coming back from `program.account.game.all()` call
-type ClickerGameObject = {
-  publicKey: PublicKey; // game's key
-  account: {
-    player: PublicKey; // player's key
-    clicks: number; // total clicks
-  };
-};
-
-type WalletAndNetwork = {
-  wallet: AnchorWallet;
-  endpoint: string;
-};
-
-type WalletAndGamePublicKey = {
-  wallet: AnchorWallet;
-  endpoint: string;
-  gameAccountPublicKey: string;
-};
-
-type GameState = {
-  clicks: number;
-  gameAccountPublicKey: string;
-  isReady: boolean;
-  errorMessage: string;
-};
-
-export type LeaderboardItem = {
-  playerPublicKey: string;
-  clicks: number;
-};
 
 async function getCurrentGame({
   wallet,
